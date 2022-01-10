@@ -33,9 +33,9 @@ class StoryCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (StringHelper().parseBaseUrl(url) != '')
+                if (StringHelper().parseHost(url) != '')
                   Text(
-                    StringHelper().parseBaseUrl(url),
+                    StringHelper().parseHost(url),
                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                   ),
                 Text(

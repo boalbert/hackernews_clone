@@ -4,7 +4,7 @@ import 'package:hackernews/util/string_helper.dart';
 void main() {
   test('HTTPS parse base String', () {
     String testUrl = 'https://arnoldgalovics.com/microservices-in-production/';
-    String result = StringHelper().parseBaseUrl(testUrl);
+    String result = StringHelper().parseHost(testUrl);
 
     String expectedUrl = 'arnoldgalovics.com'.toUpperCase();
 
@@ -13,7 +13,7 @@ void main() {
 
   test('HTTP parse base String', () {
     String testUrl = 'http://arnoldgalovics.com/microservices-in-production/';
-    String result = StringHelper().parseBaseUrl(testUrl);
+    String result = StringHelper().parseHost(testUrl);
 
     String expectedUrl = 'arnoldgalovics.com'.toUpperCase();
 
@@ -21,8 +21,8 @@ void main() {
   });
 
   test('No prefix -  base String', () {
-    String testUrl = 'arnoldgalovics.com/microservices-in-production/';
-    String result = StringHelper().parseBaseUrl(testUrl);
+    String testUrl = 'www.arnoldgalovics.com/microservices-in-production/';
+    String result = StringHelper().parseHost(testUrl);
 
     String expectedUrl = 'arnoldgalovics.com'.toUpperCase();
 

@@ -25,4 +25,12 @@ class StringHelper {
     }
     return removeTrailingSlash[0].trim().toUpperCase();
   }
+
+  String parseHost(String url) {
+    final Uri uri = Uri.parse(url);
+    if (uri.toString().contains("www.")) {
+      return uri.host.replaceAll("www.", "").toUpperCase();
+    }
+    return uri.host.toUpperCase();
+  }
 }
