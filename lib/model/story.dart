@@ -5,7 +5,6 @@ class Story {
 
   // final int descendants;
   final int id;
-
   final String time;
   final String title;
   final String type;

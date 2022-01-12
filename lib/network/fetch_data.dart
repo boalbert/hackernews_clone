@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class Util {
-  Future<Response> _getStory(int storyId) {
+  Future<Response> _getStoryDetails(int storyId) {
     return http.get(Uri.parse(UrlHelper.urlForStory(storyId)));
   }
 
@@ -14,8 +14,9 @@ class Util {
     final response = await http.get(Uri.parse(UrlHelper.urlForTopStories()));
     if (response.statusCode == 200) {
       Iterable storyIds = jsonDecode(response.body);
-      return Future.wait(storyIds.take(topStories).map((storyId) {
-        return _getStory(storyId);
+
+      return Future.wait(storyIds.skip(topStories).take(20).map((storyId) {
+        return _getStoryDetails(storyId);
       }));
     } else {
       throw Exception("Unable to fetch data!");

@@ -15,26 +15,26 @@ class TopArticleList extends StatefulWidget {
 }
 
 class _TopArticleListState extends State<TopArticleList> {
-  List<Story> _stories = <Story>[];
+  final List<Story> _stories = <Story>[];
+  final ScrollController _scrollController = ScrollController();
 
-  final ScrollController _scrollController = new ScrollController();
-
-  int topStories = 50;
+  int _initialCountOfStories = 20;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _populateTopStories();
-
     _scrollController.addListener(() {
       var endOfPage = _scrollController.position.maxScrollExtent;
 
-      if (_scrollController.position.pixels ==
-          endOfPage) {
-        print('End of page!');
+      if (_scrollController.position.pixels == endOfPage) {
+        print('Reached end of page - loading more stories');
         setState(() {
-          increaseTopStories();
+          _isLoading = true;
+          increaseRangeOfStoriesToLoad();
           _populateTopStories();
+          _isLoading = false;
         });
       }
     });
@@ -46,11 +46,11 @@ class _TopArticleListState extends State<TopArticleList> {
     _scrollController.dispose();
   }
 
-  void increaseTopStories() {
-    topStories = topStories + 50;
-    print(topStories);
+  void increaseRangeOfStoriesToLoad() {
+    _initialCountOfStories = _initialCountOfStories + 20;
   }
 
+  // ignore: unused_element
   _navigateToShowCommentsPage(BuildContext context, int index) async {
     // Hämta story för index
     final story = _stories[index];
@@ -62,14 +62,10 @@ class _TopArticleListState extends State<TopArticleList> {
     }).toList();
 
     debugPrint("$comments");
-
-    // Navigator.push(context, MaterialPageRoute(
-    //     builder: (context) => CommentPage(story: story, comments: comments);
-    // ));
   }
 
   void _populateTopStories() async {
-    final responses = await Util().getTopStories(topStories);
+    final responses = await Util().getTopStories(_initialCountOfStories);
     final stories = responses.map((response) {
       final json = jsonDecode(response.body);
       return Story.fromJson(json);
@@ -84,7 +80,7 @@ class _TopArticleListState extends State<TopArticleList> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        return Future.delayed(Duration(milliseconds: 200), () {
+        return Future.delayed(Duration(milliseconds: 400), () {
           setState(() {
             _populateTopStories();
           });
@@ -103,10 +99,15 @@ class _TopArticleListState extends State<TopArticleList> {
                   url: _stories[index].url,
                   by: _stories[index].by,
                   score: _stories[index].score,
-                  title: _stories[index].title,
+                  title: '(${index.toString()}) - ' + _stories[index].title,
                   comments: _stories[index].commentIds.length,
                 ),
                 const Divider(),
+                if ((index == _stories.length - 1) && _isLoading == true)
+                  Center(
+                      child: CircularProgressIndicator(
+                    strokeWidth: 40,
+                  ))
               ],
             );
           }),
