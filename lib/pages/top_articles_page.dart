@@ -107,9 +107,7 @@ class _TopArticleListState extends State<TopArticleList> {
                 ),
                 const Divider(),
                 Visibility(
-                  //TODO make this condition not dumb
-                  visible:
-                      (index + 1 == 20 || index + 1 == 40 || index + 1 == 60),
+                  visible: _showPageDivider(index),
                   child: PageDivider(
                     key: Key(index.toString()),
                     pageNumber: currentPage,
@@ -121,5 +119,9 @@ class _TopArticleListState extends State<TopArticleList> {
             );
           }),
     );
+  }
+
+  bool _showPageDivider(int index) {
+    return ((index + 1) % 20 == 0) && index != 0;
   }
 }
