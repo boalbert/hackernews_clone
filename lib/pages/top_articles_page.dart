@@ -25,7 +25,7 @@ class _TopArticleListState extends State<TopArticleList> {
   @override
   void initState() {
     super.initState();
-    _populateTopStories();
+    // _populateTopStories();
     _scrollController.addListener(() {
       var endOfPage = _scrollController.position.maxScrollExtent;
 
@@ -33,7 +33,7 @@ class _TopArticleListState extends State<TopArticleList> {
         print('Reached end of page - loading more stories');
         setState(() {
           _incrementRangeOfStoriesToLoad();
-          _fetchNewStories();
+          // _fetchNewStories();
           currentPage++;
         });
       }
@@ -77,6 +77,15 @@ class _TopArticleListState extends State<TopArticleList> {
     });
   }
 
+  Future<List<Story>> loadStories() async {
+    final responses = await Util().getTopStories(20);
+
+    return responses.map((response) {
+      final json = jsonDecode(response.body);
+      return Story.fromJson(json);
+    }).toList();
+  }
+
   void _fetchNewStories() async {
     final responses = await Util().getTopStories(_initialCountOfStories);
     final stories = responses.map((response) {
@@ -94,38 +103,50 @@ class _TopArticleListState extends State<TopArticleList> {
     return RefreshIndicator(
       onRefresh: () {
         return Future.delayed(Duration(milliseconds: 400), () {
-          setState(() {
-            _populateTopStories();
-          });
+          // setState(() {
+          //   _populateTopStories();
+          // });
         });
       },
-      child: ListView.builder(
-          controller: _scrollController,
-          physics: const ClampingScrollPhysics(),
-          itemCount: _stories.length,
-          itemBuilder: (_, index) {
-            return Column(
-              children: [
-                StoryCard(
-                  key: Key(_stories[index].id.toString()),
-                  time: _stories[index].time,
-                  url: _stories[index].url,
-                  by: _stories[index].by,
-                  score: _stories[index].score,
-                  title: _stories[index].title,
-                  comments: _stories[index].commentIds.length,
-                ),
-                const Divider(),
-                Visibility(
-                  visible: _togglePageDivider(index),
-                  child: PageDivider(
-                    key: Key(index.toString()),
-                    pageNumber: currentPage,
-                  ),
-                ),
-              ],
-            );
-          }),
+      child: FutureBuilder(
+        future: loadStories(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // List<Story> newStories = snapshot.data as List<Story>;
+            _stories.addAll(snapshot.data as List<Story>);
+            print(_stories.length);
+            return ListView.builder(
+                controller: _scrollController,
+                physics: const ClampingScrollPhysics(),
+                itemCount: _stories.length,
+                itemBuilder: (_, index) {
+                  return Column(
+                    children: [
+                      StoryCard(
+                        key: Key(_stories[index].id.toString()),
+                        time: _stories[index].time,
+                        url: _stories[index].url,
+                        by: _stories[index].by,
+                        score: _stories[index].score,
+                        title: _stories[index].title,
+                        comments: _stories[index].commentIds.length,
+                      ),
+                      const Divider(),
+                      Visibility(
+                        visible: _togglePageDivider(index),
+                        child: PageDivider(
+                          key: Key(index.toString()),
+                          pageNumber: currentPage,
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 
