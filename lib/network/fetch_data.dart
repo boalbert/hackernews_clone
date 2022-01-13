@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:hackernews/constants/constants.dart' as constants;
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/url_helper.dart';
 import 'package:http/http.dart' as http;
@@ -14,8 +15,10 @@ class Util {
     final response = await http.get(Uri.parse(UrlHelper.urlForTopStories()));
     if (response.statusCode == 200) {
       Iterable storyIds = jsonDecode(response.body);
-
-      return Future.wait(storyIds.skip(topStories).take(20).map((storyId) {
+      return Future.wait(storyIds
+          .skip(topStories)
+          .take(constants.Numbers.storiesToLoad)
+          .map((storyId) {
         return _getStoryDetails(storyId);
       }));
     } else {

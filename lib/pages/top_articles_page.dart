@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackernews/components/page_divider.dart';
 import 'package:hackernews/components/story_card.dart';
 import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/model/story.dart';
@@ -32,8 +33,8 @@ class _TopArticleListState extends State<TopArticleList> {
         print('Reached end of page - loading more stories');
         setState(() {
           _isLoading = true;
-          increaseRangeOfStoriesToLoad();
-          _populateTopStories();
+          // increaseRangeOfStoriesToLoad();
+          // _populateTopStories();
           _isLoading = false;
         });
       }
@@ -103,11 +104,15 @@ class _TopArticleListState extends State<TopArticleList> {
                   comments: _stories[index].commentIds.length,
                 ),
                 const Divider(),
+                Visibility(
+                  visible: index == (_stories.length - 1)
+                      && (_stories.length) == 20,
+                  child: PageDivider(
+                    pageNumber: _stories.length,
+                  ),
+                ),
                 if ((index == _stories.length - 1) && _isLoading == true)
-                  Center(
-                      child: CircularProgressIndicator(
-                    strokeWidth: 40,
-                  ))
+                  Center(child: CircularProgressIndicator())
               ],
             );
           }),
