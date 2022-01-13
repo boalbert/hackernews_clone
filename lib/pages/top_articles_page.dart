@@ -21,7 +21,6 @@ class _TopArticleListState extends State<TopArticleList> {
 
   int currentPage = 0;
   int _initialCountOfStories = 20;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -33,11 +32,9 @@ class _TopArticleListState extends State<TopArticleList> {
       if (_scrollController.position.pixels == endOfPage) {
         print('Reached end of page - loading more stories');
         setState(() {
-          _isLoading = true;
           _incrementRangeOfStoriesToLoad();
           _fetchNewStories();
           currentPage++;
-          _isLoading = false;
         });
       }
     });
@@ -104,7 +101,7 @@ class _TopArticleListState extends State<TopArticleList> {
       },
       child: ListView.builder(
           controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           itemCount: _stories.length,
           itemBuilder: (_, index) {
             return Column(
@@ -115,26 +112,24 @@ class _TopArticleListState extends State<TopArticleList> {
                   url: _stories[index].url,
                   by: _stories[index].by,
                   score: _stories[index].score,
-                  title: '(${index.toString()}) - ' + _stories[index].title,
+                  title: _stories[index].title,
                   comments: _stories[index].commentIds.length,
                 ),
                 const Divider(),
                 Visibility(
-                  visible: _showPageDivider(index),
+                  visible: _togglePageDivider(index),
                   child: PageDivider(
                     key: Key(index.toString()),
                     pageNumber: currentPage,
                   ),
                 ),
-                if ((index == _stories.length - 1) && _isLoading == true)
-                  Center(child: CircularProgressIndicator())
               ],
             );
           }),
     );
   }
 
-  bool _showPageDivider(int index) {
+  bool _togglePageDivider(int index) {
     return ((index + 1) % 20 == 0) && index != 0;
   }
 }

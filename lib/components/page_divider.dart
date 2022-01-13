@@ -15,9 +15,9 @@ class PageDivider extends StatelessWidget {
       constraints: BoxConstraints.expand(width: double.infinity, height: 30.0),
       child: Container(
         color: Colors.grey,
-        height: 30,
         child: Center(
-          child: Text('Page $pageNumber'),
+          child: Text('Page $pageNumber',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
         ),
       ),
     );
