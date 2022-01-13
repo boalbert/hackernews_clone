@@ -19,6 +19,7 @@ class _TopArticleListState extends State<TopArticleList> {
   final List<Story> _stories = <Story>[];
   final ScrollController _scrollController = ScrollController();
 
+  int currentPage = 0;
   int _initialCountOfStories = 20;
   bool _isLoading = true;
 
@@ -33,8 +34,9 @@ class _TopArticleListState extends State<TopArticleList> {
         print('Reached end of page - loading more stories');
         setState(() {
           _isLoading = true;
-          // increaseRangeOfStoriesToLoad();
-          // _populateTopStories();
+          increaseRangeOfStoriesToLoad();
+          _populateTopStories();
+          currentPage++;
           _isLoading = false;
         });
       }
@@ -105,10 +107,12 @@ class _TopArticleListState extends State<TopArticleList> {
                 ),
                 const Divider(),
                 Visibility(
-                  visible: index == (_stories.length - 1)
-                      && (_stories.length) == 20,
+                  //TODO make this condition not dumb
+                  visible:
+                      (index + 1 == 20 || index + 1 == 40 || index + 1 == 60),
                   child: PageDivider(
-                    pageNumber: _stories.length,
+                    key: Key(index.toString()),
+                    pageNumber: currentPage,
                   ),
                 ),
                 if ((index == _stories.length - 1) && _isLoading == true)
