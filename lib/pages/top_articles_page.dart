@@ -19,7 +19,7 @@ class _TopArticleListState extends State<TopArticleList> {
   final ScrollController _scrollController = ScrollController();
 
   int _initialCountOfStories = 20;
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _TopArticleListState extends State<TopArticleList> {
         print('Reached end of page - loading more stories');
         setState(() {
           _isLoading = true;
-          increaseRangeOfStoriesToLoad();
-          _populateTopStories();
+          _incrementRangeOfStoriesToLoad();
+          _fetchNewStories();
           _isLoading = false;
         });
       }
@@ -46,7 +46,7 @@ class _TopArticleListState extends State<TopArticleList> {
     _scrollController.dispose();
   }
 
-  void increaseRangeOfStoriesToLoad() {
+  void _incrementRangeOfStoriesToLoad() {
     _initialCountOfStories = _initialCountOfStories + 20;
   }
 
@@ -65,6 +65,19 @@ class _TopArticleListState extends State<TopArticleList> {
   }
 
   void _populateTopStories() async {
+    final responses = await Util().getTopStories(20);
+    final stories = responses.map((response) {
+      final json = jsonDecode(response.body);
+      return Story.fromJson(json);
+    }).toList();
+
+    setState(() {
+      _stories.clear();
+      _stories.addAll(stories);
+    });
+  }
+
+  void _fetchNewStories() async {
     final responses = await Util().getTopStories(_initialCountOfStories);
     final stories = responses.map((response) {
       final json = jsonDecode(response.body);
