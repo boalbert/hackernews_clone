@@ -16,8 +16,9 @@ class TopArticleList extends StatefulWidget {
 }
 
 class _TopArticleListState extends State<TopArticleList> {
-  final List<Story> _stories = <Story>[];
+  List<Story> _stories = <Story>[];
   final ScrollController _scrollController = ScrollController();
+  bool loading = true;
 
   int currentPage = 0;
   int _initialCountOfStories = 20;
@@ -33,7 +34,7 @@ class _TopArticleListState extends State<TopArticleList> {
         print('Reached end of page - loading more stories');
         setState(() {
           _incrementRangeOfStoriesToLoad();
-          // _fetchNewStories();
+          _fetchNewStories().then((value) => _stories.addAll(value));
           currentPage++;
         });
       }
@@ -77,7 +78,8 @@ class _TopArticleListState extends State<TopArticleList> {
     });
   }
 
-  Future<List<Story>> loadStories() async {
+  _loadStories() async {
+    print('_loadStories called');
     final responses = await Util().getTopStories(20);
 
     return responses.map((response) {
@@ -86,17 +88,33 @@ class _TopArticleListState extends State<TopArticleList> {
     }).toList();
   }
 
-  void _fetchNewStories() async {
+  _fetchNewStories() async {
     final responses = await Util().getTopStories(_initialCountOfStories);
-    final stories = responses.map((response) {
+    return responses.map((response) {
       final json = jsonDecode(response.body);
       return Story.fromJson(json);
     }).toList();
 
-    setState(() {
-      _stories.addAll(stories);
-    });
+    // setState(() {
+    //   _stories.addAll(stories);
+    // });
   }
+
+  //FutureBuilder(
+  //   future: _fetchListItems(),
+  //   builder: (context, AsyncSnapshot snapshot) {
+  //     if (!snapshot.hasData) {
+  //       return Center(child: CircularProgressIndicator());
+  //     } else {
+  //       Container(
+  //           child: ListView.builder(
+  //               itemCount: snapshot.data.length,
+  //               scrollDirection: Axis.horizontal,
+  //               itemBuilder: (BuildContext context, int index) {
+  //                 return Text('${snapshot.data[index].title}');
+  //               }));
+  //     }
+  //   });
 
   @override
   Widget build(BuildContext context) {
@@ -109,26 +127,27 @@ class _TopArticleListState extends State<TopArticleList> {
         });
       },
       child: FutureBuilder(
-        future: loadStories(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // List<Story> newStories = snapshot.data as List<Story>;
-            _stories.addAll(snapshot.data as List<Story>);
-            print(_stories.length);
+        future: _loadStories(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            _stories = snapshot.data as List<Story>;
             return ListView.builder(
                 controller: _scrollController,
-                physics: const ClampingScrollPhysics(),
                 itemCount: _stories.length,
-                itemBuilder: (_, index) {
+                physics: const ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
                   return Column(
                     children: [
                       StoryCard(
-                        key: Key(_stories[index].id.toString()),
+                        key: Key(_stories[index].time.toString()),
                         time: _stories[index].time,
                         url: _stories[index].url,
                         by: _stories[index].by,
                         score: _stories[index].score,
-                        title: _stories[index].title,
+                        title:
+                            '(${index.toString()}) - ' + _stories[index].title,
                         comments: _stories[index].commentIds.length,
                       ),
                       const Divider(),
@@ -142,8 +161,6 @@ class _TopArticleListState extends State<TopArticleList> {
                     ],
                   );
                 });
-          } else {
-            return Center(child: CircularProgressIndicator());
           }
         },
       ),
