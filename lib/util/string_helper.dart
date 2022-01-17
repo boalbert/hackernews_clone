@@ -1,7 +1,7 @@
 import 'package:timeago/timeago.dart' as timeago;
 
 class StringHelper {
-  String formattedDateTime(int dateTime) {
+  String formattedDateTime(int dateTime, {type}) {
     final DateTime postTime =
         DateTime.fromMillisecondsSinceEpoch(dateTime * 1000);
 

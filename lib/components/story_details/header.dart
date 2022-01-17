@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hackernews/components/story_card.dart';
 import 'package:hackernews/util/string_helper.dart';
 
-class CommentHeader extends StatelessWidget {
+class Header extends StatelessWidget {
   final String url;
   final String title;
   final String by;
@@ -9,7 +10,7 @@ class CommentHeader extends StatelessWidget {
   final String commentCount;
   final String time;
 
-  const CommentHeader({
+  const Header({
     Key? key,
     required this.url,
     required this.title,
@@ -37,15 +38,9 @@ class CommentHeader extends StatelessWidget {
             ),
             Row(
               children: [
-                Text(
-                  by,
-                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 11),
-                ),
-                // CardContentDivider(),
-                Text(
-                  time,
-                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11),
-                ),
+                SmallCardText(text: by, fontWeight: FontWeight.w300),
+                SmallCardText(text: ' - ', fontWeight: FontWeight.w200),
+                SmallCardText(text: time, fontWeight: FontWeight.w200),
               ],
             ),
           ],

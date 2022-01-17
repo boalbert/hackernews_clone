@@ -1,14 +1,33 @@
-
 import 'package:hackernews/model/story.dart';
+import 'package:hackernews/util/string_helper.dart';
 
 class Comment {
-  String text = "";
-  final int commentId;
   late final Story story;
 
-  Comment({required this.text, required this.commentId});
+  final String by;
+  final int id;
+
+  final int parent;
+  final String text;
+
+  final String time;
+  final String type;
+
+  Comment(
+      {required this.by,
+      required this.id,
+      required this.parent,
+      required this.text,
+      required this.time,
+      required this.type});
 
   factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment(commentId: json["id"], text: json["text"] ?? 'No comment');
+    return Comment(
+        by: json['by'] ?? '[Deleted]',
+        id: json['id'],
+        parent: json['parent'] ?? 0,
+        text: json["text"] ?? 'No comment',
+        time: StringHelper().formattedDateTime(json['time']),
+        type: json['type']);
   }
 }
