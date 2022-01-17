@@ -4,6 +4,7 @@ import 'package:hackernews/components/page_divider.dart';
 import 'package:hackernews/components/story_card.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/fetch_data.dart';
+import 'package:hackernews/pages/comment_page.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TopArticleList extends StatefulWidget {
@@ -41,6 +42,12 @@ class _TopArticleListState extends State<TopArticleList> {
     return ((index + 1) % 20 == 0) && index != 0;
   }
 
+  void _navigateToShowCommentsPage(BuildContext context, Story story) async {
+    print(story);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CommentPage(story: story)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -48,15 +55,18 @@ class _TopArticleListState extends State<TopArticleList> {
       child: PagedListView.separated(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<Story>(
-          itemBuilder: (context, item, index) => Column(
+          itemBuilder: (_, item, index) => Column(
             children: [
-              StoryCard(
-                  title: item.title,
-                  score: item.score,
-                  by: item.by,
-                  url: item.url,
-                  comments: item.commentIds.length,
-                  time: item.time),
+              InkWell(
+                onTap: () => {_navigateToShowCommentsPage(context, item)},
+                child: StoryCard(
+                    title: item.title,
+                    score: item.score,
+                    by: item.by,
+                    url: item.url,
+                    comments: item.commentIds.length,
+                    time: item.time),
+              ),
               Visibility(
                   visible: _togglePageDivider(index), child: PageDivider())
             ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hackernews/constants/constants.dart' as constants;
+import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/url_helper.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,16 @@ class FetchData {
     return Future.wait(story.commentIds.map((commentId) {
       return http.get(Uri.parse(UrlHelper.urlForCommentById(commentId)));
     }));
+  }
+
+  Future<List<Comment>> getComments(Story story) async {
+    final responses = getCommentsByStoryId(story);
+    print(responses);
+
+    return responses.then((value) => value.map((response) {
+          final json = jsonDecode(response.body);
+          return Comment.fromJson(json);
+        }).toList());
   }
 
   Future<List<Story>> loadStories(int storiesToLoad) async {
