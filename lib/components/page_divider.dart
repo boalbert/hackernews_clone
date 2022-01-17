@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PageDivider extends StatelessWidget {
-  final int pageNumber;
-
   const PageDivider({
     Key? key,
-    required this.pageNumber,
   }) : super(key: key);
 
   @override
@@ -16,7 +13,7 @@ class PageDivider extends StatelessWidget {
       child: Container(
         color: Colors.grey,
         child: Center(
-          child: Text('Page $pageNumber',
+          child: Text('Page NewPage',
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
         ),
       ),

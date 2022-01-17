@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/components/page_divider.dart';
 import 'package:hackernews/components/story_card.dart';
-import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/fetch_data.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TopArticleList extends StatefulWidget {
   const TopArticleList({Key? key}) : super(key: key);
@@ -16,120 +14,68 @@ class TopArticleList extends StatefulWidget {
 }
 
 class _TopArticleListState extends State<TopArticleList> {
-  final List<Story> _stories = <Story>[];
   final ScrollController _scrollController = ScrollController();
 
-  int currentPage = 0;
-  int _initialCountOfStories = 20;
+  final PagingController<int, Story> _pagingController =
+  PagingController(firstPageKey: 0);
+
 
   @override
   void initState() {
     super.initState();
-    _populateTopStories();
-    _scrollController.addListener(() {
-      var endOfPage = _scrollController.position.maxScrollExtent;
-
-      if (_scrollController.position.pixels == endOfPage) {
-        print('Reached end of page - loading more stories');
-        setState(() {
-          _incrementRangeOfStoriesToLoad();
-          _fetchNewStories();
-          currentPage++;
-        });
-      }
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
     });
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems = await FetchData().loadStories(pageKey);
+      final nextPageKey = pageKey += 20;
+      _pagingController.appendPage(newItems, nextPageKey);
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
+
+  bool _togglePageDivider(int index) {
+    return ((index + 1) % 20 == 0) && index != 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
+      child: PagedListView.separated(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Story>(
+          itemBuilder: (context, item, index) =>
+              Column(
+                children: [
+                  StoryCard(
+                      title: item.title,
+                      score: item.score,
+                      by: item.by,
+                      url: item.url,
+                      comments: item.commentIds.length,
+                      time: item.time),
+                  Visibility(
+                      visible: _togglePageDivider(index), child: PageDivider())
+                ],
+              ),
+        ),
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider();
+        },
+      ),
+    );
   }
 
   @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
-  }
-
-  void _incrementRangeOfStoriesToLoad() {
-    _initialCountOfStories = _initialCountOfStories + 20;
-  }
-
-  // ignore: unused_element
-  _navigateToShowCommentsPage(BuildContext context, int index) async {
-    // Hämta story för index
-    final story = _stories[index];
-    // Hämta kommentarer för story
-    final responses = await Util().getCommentsByStoryId(story);
-    final comments = responses.map((response) {
-      final json = jsonDecode(response.body);
-      return Comment.fromJson(json);
-    }).toList();
-
-    debugPrint("$comments");
-  }
-
-  void _populateTopStories() async {
-    final responses = await Util().getTopStories(20);
-    final stories = responses.map((response) {
-      final json = jsonDecode(response.body);
-      return Story.fromJson(json);
-    }).toList();
-
-    setState(() {
-      _stories.clear();
-      _stories.addAll(stories);
-    });
-  }
-
-  void _fetchNewStories() async {
-    final responses = await Util().getTopStories(_initialCountOfStories);
-    final stories = responses.map((response) {
-      final json = jsonDecode(response.body);
-      return Story.fromJson(json);
-    }).toList();
-
-    setState(() {
-      _stories.addAll(stories);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () {
-        return Future.delayed(Duration(milliseconds: 400), () {
-          setState(() {
-            _populateTopStories();
-          });
-        });
-      },
-      child: ListView.builder(
-          controller: _scrollController,
-          physics: const ClampingScrollPhysics(),
-          itemCount: _stories.length,
-          itemBuilder: (_, index) {
-            return Column(
-              children: [
-                StoryCard(
-                  key: Key(_stories[index].id.toString()),
-                  time: _stories[index].time,
-                  url: _stories[index].url,
-                  by: _stories[index].by,
-                  score: _stories[index].score,
-                  title: _stories[index].title,
-                  comments: _stories[index].commentIds.length,
-                ),
-                const Divider(),
-                Visibility(
-                  visible: _togglePageDivider(index),
-                  child: PageDivider(
-                    key: Key(index.toString()),
-                    pageNumber: currentPage,
-                  ),
-                ),
-              ],
-            );
-          }),
-    );
-  }
-
-  bool _togglePageDivider(int index) {
-    return ((index + 1) % 20 == 0) && index != 0;
+    _pagingController.dispose();
   }
 }
