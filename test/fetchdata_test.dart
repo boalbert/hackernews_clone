@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hackernews/model/reply.dart';
+import 'package:hackernews/network/fetch_data.dart';
 
 void main() {
   test('fetch_story_0_to_50', () async {
@@ -26,6 +28,65 @@ void main() {
 
     expect(fetchedStoryIds[0], 29906146);
     expect(fetchedStoryIds[49], 29896193);
+  });
+
+  test('fetch child comments from parent', () async {
+    Future<List<int>> replyIdsFromParent =
+    FetchData().getReplyIdsFromParent(2921983);
+
+    List<int> replyIds = await replyIdsFromParent;
+
+    expect(replyIds.length, 7);
+    expect(replyIds,
+        [2922097, 2922429, 2924562, 2922709, 2922573, 2922140, 2922141]);
+  });
+
+  test('fetch a single reply', () async {
+    Future<Reply> replyFuture = FetchData().getReply(2922429);
+
+    Reply reply = await replyFuture;
+
+    expect(reply.by, "pstuart");
+    expect(reply.id, 2922429);
+    expect(reply.parent, 2921983);
+    expect(reply.type, "comment");
+    expect(reply.text,
+        "Having no formal CS education (I consider myself a coder, not a programmer) I found your spell checker example to be intimidatingly beautiful. It feels like learning to play guitar and hearing Hendrix play: it's fun to do it but kind of depressing knowing I'll never come close.");
+  });
+
+  test('fetch list of replies from a list of replyIds', () async {
+    Future<List<int>> replyIdsFromParent =
+    FetchData().getReplyIdsFromParent(2921983);
+
+    List<int> replyIds = await replyIdsFromParent;
+
+    List<Reply> repliesFromListOfInts =
+    await FetchData().getRepliesFromListOfInts(replyIds);
+
+    print(repliesFromListOfInts[3].text);
+  });
+
+  test('whole chain of fetching replies', () async {
+    //
+    Future<List<int>> replyIdsFromParent =
+    FetchData().getReplyIdsFromParent(29907013);
+
+    List<int> replyIds = await replyIdsFromParent;
+
+    Future<List<Reply>> repliesFromListOfInts =
+    FetchData().getRepliesFromListOfInts(replyIds);
+
+    List<Reply> allReplies = await repliesFromListOfInts;
+
+    for (Reply reply in allReplies) {
+      print(reply.id);
+      print(reply.text);
+      print('---');
+    }
+  });
+
+  test('get replies from Comment object', () async {
+
   });
 }
 

@@ -1,37 +1,33 @@
-import 'package:hackernews/model/story.dart';
 import 'package:hackernews/util/string_helper.dart';
 
-class Comment {
-  late final Story story;
-
+class Reply {
   final String by;
   final int id;
-
   final int parent;
   final String text;
-  final List<int> kids;
-
   final String time;
   final String type;
 
-  Comment(
+  Reply(
       {required this.by,
       required this.id,
       required this.parent,
       required this.text,
-      required this.kids,
       required this.time,
       required this.type});
 
-  factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment(
+  @override
+  String toString() {
+    return 'Reply{by: $by, id: $id, parent: $parent, text: $text, time: $time, type: $type}';
+  }
+
+  factory Reply.fromJson(Map<String, dynamic> json) {
+    return Reply(
         by: json['by'] ?? '[Deleted]',
         id: json['id'],
         parent: json['parent'] ?? 0,
-        text: json["text"] ?? '[Deleted]',
-        kids: json["kids"] == null ? <int>[] : json["kids"].cast<int>(),
+        text: json["text"] ?? 'No comment',
         time: StringHelper().formattedDateTime(json['time']),
         type: json['type']);
-    //commentIds: json["kids"] == null ? <int>[] : json["kids"].cast<int>());
   }
 }

@@ -50,10 +50,12 @@ class _CommentPageState extends State<CommentPage> {
                           time: widget.story.time);
                     } else {
                       return CommentCard(
-                        by: comment.data![index].by,
-                        text: comment.data![index].text,
-                        time: comment.data![index].time,
-                      );
+                          key: Key(comment.data![index].id.toString()),
+                          id: comment.data![index].id,
+                          by: comment.data![index].by,
+                          text: comment.data![index].text,
+                          time: comment.data![index].time,
+                          kids: comment.data![index].kids);
                     }
                   });
             } else if (comment.hasError) {
