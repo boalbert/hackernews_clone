@@ -8,9 +8,6 @@ class Comment {
   Comment({required this.text, required this.commentId});
 
   factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment(
-        commentId: json["id"],
-        text: json["text"]
-    );
+    return Comment(commentId: json["id"], text: json["text"]);
   }
 }

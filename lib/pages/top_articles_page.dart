@@ -17,8 +17,7 @@ class _TopArticleListState extends State<TopArticleList> {
   final ScrollController _scrollController = ScrollController();
 
   final PagingController<int, Story> _pagingController =
-  PagingController(firstPageKey: 0);
-
+      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
@@ -45,25 +44,23 @@ class _TopArticleListState extends State<TopArticleList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-
       onRefresh: () => Future.sync(() => _pagingController.refresh()),
       child: PagedListView.separated(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<Story>(
-          itemBuilder: (context, item, index) =>
-              Column(
-                children: [
-                  StoryCard(
-                      title: item.title,
-                      score: item.score,
-                      by: item.by,
-                      url: item.url,
-                      comments: item.commentIds.length,
-                      time: item.time),
-                  Visibility(
-                      visible: _togglePageDivider(index), child: PageDivider())
-                ],
-              ),
+          itemBuilder: (context, item, index) => Column(
+            children: [
+              StoryCard(
+                  title: item.title,
+                  score: item.score,
+                  by: item.by,
+                  url: item.url,
+                  comments: item.commentIds.length,
+                  time: item.time),
+              Visibility(
+                  visible: _togglePageDivider(index), child: PageDivider())
+            ],
+          ),
         ),
         separatorBuilder: (BuildContext context, int index) {
           return Divider();
