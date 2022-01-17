@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/components/page_divider.dart';
 import 'package:hackernews/components/story_card.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/fetch_data.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TopArticleList extends StatefulWidget {
   const TopArticleList({Key? key}) : super(key: key);
@@ -15,58 +14,27 @@ class TopArticleList extends StatefulWidget {
 }
 
 class _TopArticleListState extends State<TopArticleList> {
-  late Future<List<Story>> _futureStories;
   final ScrollController _scrollController = ScrollController();
 
-  int currentPage = 0;
-  int _initialCountOfStories = 20;
+  final PagingController<int, Story> _pagingController =
+      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
     super.initState();
-    _futureStories = _loadStories();
-
-    _scrollController.addListener(() {
-      var endOfPage = _scrollController.position.maxScrollExtent;
-
-      if (_scrollController.position.pixels == endOfPage) {
-        print('Reached end of page - loading more stories');
-        setState(() {
-          _incrementRangeOfStoriesToLoad();
-          // _fetchNewStories().then((value) => _futureStories.);
-          currentPage++;
-        });
-      }
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
-
-  void _incrementRangeOfStoriesToLoad() {
-    _initialCountOfStories = _initialCountOfStories + 20;
-  }
-
-  Future<List<Story>> _loadStories() async {
-    print('_loadStories called');
-    final responses = await Util().getTopStories(20);
-
-    return responses.map((response) {
-      final json = jsonDecode(response.body);
-      return Story.fromJson(json);
-    }).toList();
-  }
-
-  // ignore: unused_element
-  Future<List<Story>> _loadNewStories() async {
-    final responses = await Util().getTopStories(_initialCountOfStories);
-    return responses.map((response) {
-      final json = jsonDecode(response.body);
-      return Story.fromJson(json);
-    }).toList();
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems = await FetchData().loadStories(pageKey);
+      final nextPageKey = pageKey += 20;
+      _pagingController.appendPage(newItems, nextPageKey);
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   bool _togglePageDivider(int index) {
@@ -75,42 +43,36 @@ class _TopArticleListState extends State<TopArticleList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _futureStories,
-      builder: (context, AsyncSnapshot story) {
-        if (!story.hasData) {
-          return Center(child: CircularProgressIndicator());
-        } else {
-          return ListView.builder(
-              controller: _scrollController,
-              itemCount: story.data.length,
-              physics: const ClampingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    StoryCard(
-                      key: Key(story.data[index].time.toString()),
-                      time: story.data[index].time,
-                      url: story.data[index].url,
-                      by: story.data[index].by,
-                      score: story.data[index].score,
-                      title:
-                          '(${index.toString()}) - ' + story.data[index].title,
-                      comments: 0,
-                    ),
-                    const Divider(),
-                    Visibility(
-                      visible: _togglePageDivider(index),
-                      child: PageDivider(
-                        key: Key(index.toString()),
-                        pageNumber: currentPage,
-                      ),
-                    ),
-                  ],
-                );
-              });
-        }
-      },
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
+      child: PagedListView.separated(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Story>(
+          itemBuilder: (context, item, index) => Column(
+            children: [
+              StoryCard(
+                  title: item.title,
+                  score: item.score,
+                  by: item.by,
+                  url: item.url,
+                  comments: item.commentIds.length,
+                  time: item.time),
+              Visibility(
+                  visible: _togglePageDivider(index), child: PageDivider())
+            ],
+          ),
+        ),
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider();
+        },
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _pagingController.dispose();
   }
 }

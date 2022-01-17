@@ -6,7 +6,7 @@ import 'package:hackernews/network/url_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-class Util {
+class FetchData {
   Future<Response> _getStoryDetails(int storyId) {
     return http.get(Uri.parse(UrlHelper.urlForStory(storyId)));
   }
@@ -30,5 +30,13 @@ class Util {
     return Future.wait(story.commentIds.map((commentId) {
       return http.get(Uri.parse(UrlHelper.urlForCommentById(commentId)));
     }));
+  }
+
+  Future<List<Story>> loadStories(int storiesToLoad) async {
+    final responses = await getTopStories(storiesToLoad);
+    return responses.map((response) {
+      final json = jsonDecode(response.body);
+      return Story.fromJson(json);
+    }).toList();
   }
 }
