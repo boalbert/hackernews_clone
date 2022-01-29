@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackernews/components/small_card_text.dart';
 import 'package:hackernews/util/string_helper.dart';
 
 class StoryCard extends StatelessWidget {
@@ -36,10 +37,12 @@ class StoryCard extends StatelessWidget {
                 if (StringHelper().parseHost(url) != '')
                   Text(
                     StringHelper().parseHost(url),
+                    key: Key(url),
                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                   ),
                 Text(
                   title,
+                  key: Key(title),
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                 ),
               ],
@@ -47,9 +50,14 @@ class StoryCard extends StatelessWidget {
           ),
           Row(
             children: [
-              SmallCardText(text: by, fontWeight: FontWeight.w300),
-              SmallCardText(text: ' - ', fontWeight: FontWeight.w200),
-              SmallCardText(text: time, fontWeight: FontWeight.w200),
+              SmallCardText(
+                  key: Key(by), text: by, fontWeight: FontWeight.w300),
+              SmallCardText(
+                  key: Key(by + time),
+                  text: ' - ',
+                  fontWeight: FontWeight.w200),
+              SmallCardText(
+                  key: Key(time), text: time, fontWeight: FontWeight.w200),
             ],
           ),
           Padding(
@@ -59,37 +67,21 @@ class StoryCard extends StatelessWidget {
             children: [
               Text(
                 score + ' points',
+                key: Key(score + by),
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
               ),
               Text(
                 ' - ',
+                key: Key(by + score),
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
               ),
               Text("$comments comments",
+                  key: Key(comments.toString() + by),
                   style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11)),
             ],
           )
         ],
       ),
-    );
-  }
-}
-
-class SmallCardText extends StatelessWidget {
-  const SmallCardText({
-    Key? key,
-    required this.text,
-    required this.fontWeight,
-  }) : super(key: key);
-
-  final String text;
-  final FontWeight fontWeight;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(fontWeight: fontWeight, fontSize: 11),
     );
   }
 }

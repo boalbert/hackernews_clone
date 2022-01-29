@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class FetchData {
-  Future<Response> _getStoryDetails(int storyId) {
+  Future<Response> _getStoryDetails(int storyId) async {
     return http.get(Uri.parse(UrlHelper.urlForStory(storyId)));
   }
 
@@ -37,8 +37,7 @@ class FetchData {
   Future<List<Comment>> getComments(Story story) async {
     final responses = getCommentsByStoryId(story);
 
-    return responses.then((value) =>
-        value.map((response) {
+    return responses.then((value) => value.map((response) {
           final json = jsonDecode(response.body);
           return Comment.fromJson(json);
         }).toList());
@@ -52,15 +51,11 @@ class FetchData {
     }).toList();
   }
 
-  // Future<List<Reply>>
   Future<List<int>> getReplyIdsFromParent(int commentId) async {
     final response =
-    await http.get(Uri.parse(UrlHelper.urlForCommentById(commentId)));
+        await http.get(Uri.parse(UrlHelper.urlForCommentById(commentId)));
     if (response.statusCode == 200) {
-      return Comment
-          .fromJson(jsonDecode(response.body))
-          .kids
-          .cast<int>();
+      return Comment.fromJson(jsonDecode(response.body)).kids.cast<int>();
     } else {
       throw Exception('Unable to fetch replies!');
     }
@@ -68,7 +63,7 @@ class FetchData {
 
   Future<Reply> getReply(int commentId) async {
     final response =
-    await http.get(Uri.parse(UrlHelper.urlForCommentById(commentId)));
+        await http.get(Uri.parse(UrlHelper.urlForCommentById(commentId)));
 
     if (response.statusCode == 200) {
       return Reply.fromJson(jsonDecode(response.body));
@@ -87,7 +82,19 @@ class FetchData {
     return listOfReplies;
   }
 
-  Future<List<Reply>> getRepliesToComment(Comment comment) {
-    return getRepliesFromListOfInts(comment.kids);
+  Future<List<Reply>> getRepliesToComment(Comment comment) async {
+    return getRepliesFromListOfIntsWithFutureWait(comment.kids);
+  }
+
+  Future<List<Reply>> getRepliesFromListOfIntsWithFutureWait(
+      List<int> replyIdList) async {
+    List<Reply> allReplies = [];
+
+    Future.wait(replyIdList.map((element) async {
+      Reply oneReply = await getReply(element);
+      allReplies.add(oneReply);
+    }).toList());
+
+    return allReplies;
   }
 }

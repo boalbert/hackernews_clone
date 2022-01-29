@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/components/page_divider.dart';
 import 'package:hackernews/components/story_card.dart';
+import 'package:hackernews/model/reply.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/fetch_data.dart';
 import 'package:hackernews/pages/comment_page.dart';
@@ -43,7 +44,15 @@ class _TopArticleListState extends State<TopArticleList> {
   }
 
   void _navigateToShowCommentsPage(BuildContext context, Story story) async {
-    print(story);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CommentPage(story: story)));
+  }
+
+  void _navigateToStatelessCommentPage(
+      BuildContext context, Story story) async {
+    List<Reply> repliesFromListOfInts =
+        await FetchData().getRepliesFromListOfInts(story.commentIds);
+
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => CommentPage(story: story)));
   }

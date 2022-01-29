@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hackernews/components/story_card.dart';
 import 'package:hackernews/util/string_helper.dart';
+
+import '../small_card_text.dart';
 
 class Header extends StatelessWidget {
   final String url;
@@ -38,9 +39,17 @@ class Header extends StatelessWidget {
             ),
             Row(
               children: [
-                SmallCardText(text: by, fontWeight: FontWeight.w300),
-                SmallCardText(text: ' - ', fontWeight: FontWeight.w200),
-                SmallCardText(text: time, fontWeight: FontWeight.w200),
+                SmallCardText(
+                  text: by,
+                  fontWeight: FontWeight.w300,
+                  key: Key(by),
+                ),
+                SmallCardText(
+                    text: ' - ',
+                    fontWeight: FontWeight.w200,
+                    key: Key(by + time)),
+                SmallCardText(
+                    text: time, fontWeight: FontWeight.w200, key: Key(time)),
               ],
             ),
           ],

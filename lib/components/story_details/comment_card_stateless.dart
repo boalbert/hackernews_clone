@@ -1,45 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/model/reply.dart';
-import 'package:hackernews/network/fetch_data.dart';
 
 import '../small_card_text.dart';
 
-class CommentCard extends StatefulWidget {
+class CommentCardStateless extends StatelessWidget {
   final int id;
   final String by;
   final String time;
   final String text;
-  final List<int> kids;
+  final Future<List<Reply>> replies;
 
-  const CommentCard({
-    Key? key,
-    required this.id,
-    required this.by,
-    required this.time,
-    required this.text,
-    required this.kids,
-  }) : super(key: key);
-
-  @override
-  State<CommentCard> createState() => _CommentCardState();
-}
-
-class _CommentCardState extends State<CommentCard> {
-  bool _expanded = true;
-  late Future<List<Reply>> replies;
-
-  @override
-  void initState() {
-    super.initState();
-    replies = FetchData().getRepliesFromListOfInts(widget.kids);
-  }
-
-  void _toggleComment() {
-    setState(() {
-      _expanded = !_expanded;
-    });
-  }
+  const CommentCardStateless(
+      {Key? key,
+      required this.replies,
+      required this.id,
+      required this.by,
+      required this.time,
+      required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,28 +30,28 @@ class _CommentCardState extends State<CommentCard> {
               padding:
                   EdgeInsets.only(bottom: 5.0, top: 10, left: 10, right: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: [
                     SmallCardText(
-                      text: widget.by,
-                      fontWeight: FontWeight.w300,
-                      key: Key(widget.by),
-                    ),
+                        key: Key(by + time),
+                        text: by,
+                        fontWeight: FontWeight.w300),
                     SmallCardText(
-                      text: ' - ',
-                      fontWeight: FontWeight.w200,
-                      key: Key(widget.by + widget.time),
-                    ),
+                        key: Key(text),
+                        text: ' - ',
+                        fontWeight: FontWeight.w200),
                     SmallCardText(
-                      text: widget.time,
-                      fontWeight: FontWeight.w200,
-                      key: Key(widget.time),
-                    ),
+                        key: Key(time + by),
+                        text: time,
+                        fontWeight: FontWeight.w200),
                   ]),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.text),
+                      Text(text, key: Key(text)),
                       ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
                         cacheExtent: 3000000,
                         itemBuilder: (context, index) {
                           return Container(
@@ -84,24 +63,22 @@ class _CommentCardState extends State<CommentCard> {
                             ),
                             padding: EdgeInsets.only(left: 15, top: 10),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
                                     SmallCardText(
+                                        key: Key(reply.data![index].by),
                                         text: reply.data![index].by,
-                                        fontWeight: FontWeight.w300,
-                                        key: Key(reply.data![index].by)),
+                                        fontWeight: FontWeight.w300),
                                     SmallCardText(
-                                      text: ' - ',
-                                      fontWeight: FontWeight.w200,
-                                      key: Key(reply.data![index].by +
-                                          reply.data![index].time),
-                                    ),
+                                        key: Key(reply.data![index].text),
+                                        text: ' - ',
+                                        fontWeight: FontWeight.w200),
                                     SmallCardText(
-                                      text: reply.data![index].time,
-                                      fontWeight: FontWeight.w200,
-                                      key: Key(reply.data![index].time),
-                                    ),
+                                        key: Key(reply.data![index].time),
+                                        text: reply.data![index].time,
+                                        fontWeight: FontWeight.w200),
                                   ],
                                 ),
                                 Text(reply.data![index].text),
@@ -118,11 +95,11 @@ class _CommentCardState extends State<CommentCard> {
               ),
             );
           } else if (reply.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           } else if (reply.connectionState == ConnectionState.active) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         });
   }

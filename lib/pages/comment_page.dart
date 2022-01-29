@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hackernews/components/story_details/comment_card.dart';
+import 'package:hackernews/components/story_details/comment_card_stateless.dart';
 import 'package:hackernews/components/story_details/header.dart';
 import 'package:hackernews/model/comment.dart';
+import 'package:hackernews/model/reply.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/fetch_data.dart';
 
@@ -15,7 +16,8 @@ class CommentPage extends StatefulWidget {
   State<CommentPage> createState() => _CommentPageState();
 }
 
-class _CommentPageState extends State<CommentPage> {
+class _CommentPageState extends State<CommentPage>
+    with AutomaticKeepAliveClientMixin {
   late Future<List<Comment>> _comments;
 
   @override
@@ -25,8 +27,30 @@ class _CommentPageState extends State<CommentPage> {
     _comments = FetchData().getComments(widget.story);
   }
 
+  Future<List<Reply>> getRepliesForComment(int index) async {
+    List<Comment> listOfAllComments = await _comments;
+    List<Reply> repliesFromListOfInts = await FetchData()
+        .getRepliesFromListOfInts(listOfAllComments[index].kids);
+    return repliesFromListOfInts;
+  }
+
+  List<Reply> listOfReplies(int index) {
+    List<Reply> replies = [];
+    Future<List<Reply>> repliesForComment = getRepliesForComment(index);
+
+    repliesForComment.then((value) => value.forEach((element) {
+          print('loop');
+          replies.add(element);
+        }));
+
+    print(replies.length);
+
+    return replies;
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.story.title),
@@ -49,13 +73,13 @@ class _CommentPageState extends State<CommentPage> {
                               widget.story.commentIds.length.toString(),
                           time: widget.story.time);
                     } else {
-                      return CommentCard(
-                          key: Key(comment.data![index].id.toString()),
-                          id: comment.data![index].id,
-                          by: comment.data![index].by,
-                          text: comment.data![index].text,
-                          time: comment.data![index].time,
-                          kids: comment.data![index].kids);
+                      return CommentCardStateless(
+                        id: comment.data![index].id,
+                        by: comment.data![index].by,
+                        time: comment.data![index].time,
+                        text: comment.data![index].text,
+                        replies: getRepliesForComment(index),
+                      );
                     }
                   });
             } else if (comment.hasError) {
@@ -68,4 +92,8 @@ class _CommentPageState extends State<CommentPage> {
           },
         ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
