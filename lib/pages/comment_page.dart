@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/components/story_details/comment_card_stateless.dart';
 import 'package:hackernews/components/story_details/header.dart';
@@ -6,6 +5,7 @@ import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/model/reply.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/fetch_data.dart';
+import 'package:hackernews/util/string_helper.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage({Key? key, required this.story}) : super(key: key);
@@ -16,8 +16,7 @@ class CommentPage extends StatefulWidget {
   State<CommentPage> createState() => _CommentPageState();
 }
 
-class _CommentPageState extends State<CommentPage>
-    with AutomaticKeepAliveClientMixin {
+class _CommentPageState extends State<CommentPage> with AutomaticKeepAliveClientMixin {
   late Future<List<Comment>> _comments;
 
   @override
@@ -29,8 +28,7 @@ class _CommentPageState extends State<CommentPage>
 
   Future<List<Reply>> getRepliesForComment(int index) async {
     List<Comment> listOfAllComments = await _comments;
-    List<Reply> repliesFromListOfInts = await FetchData()
-        .getRepliesFromListOfInts(listOfAllComments[index].kids);
+    List<Reply> repliesFromListOfInts = await FetchData().getRepliesFromListOfInts(listOfAllComments[index].kids);
     return repliesFromListOfInts;
   }
 
@@ -69,15 +67,14 @@ class _CommentPageState extends State<CommentPage>
                           title: widget.story.url,
                           by: widget.story.by,
                           points: widget.story.score,
-                          commentCount:
-                              widget.story.commentIds.length.toString(),
+                          commentCount: widget.story.commentIds.length.toString(),
                           time: widget.story.time);
                     } else {
                       return CommentCardStateless(
                         id: comment.data![index].id,
                         by: comment.data![index].by,
                         time: comment.data![index].time,
-                        text: comment.data![index].text,
+                        text: StringHelper().encodeComments(comment.data![index].text),
                         replies: getRepliesForComment(index),
                       );
                     }

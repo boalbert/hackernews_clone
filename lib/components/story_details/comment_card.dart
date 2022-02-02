@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/model/reply.dart';
 import 'package:hackernews/network/fetch_data.dart';
@@ -48,8 +47,7 @@ class _CommentCardState extends State<CommentCard> {
         builder: (context, reply) {
           if (reply.hasData && reply.connectionState == ConnectionState.done) {
             return Container(
-              padding:
-                  EdgeInsets.only(bottom: 5.0, top: 10, left: 10, right: 10),
+              padding: EdgeInsets.only(bottom: 5.0, top: 10, left: 10, right: 10),
               child: Column(
                 children: [
                   Row(children: [
@@ -78,8 +76,7 @@ class _CommentCardState extends State<CommentCard> {
                           return Container(
                             decoration: const BoxDecoration(
                               border: Border(
-                                left: BorderSide(
-                                    width: 2.0, color: Colors.orange),
+                                left: BorderSide(width: 2.0, color: Colors.orange),
                               ),
                             ),
                             padding: EdgeInsets.only(left: 15, top: 10),
@@ -87,15 +84,11 @@ class _CommentCardState extends State<CommentCard> {
                               children: [
                                 Row(
                                   children: [
-                                    SmallCardText(
-                                        text: reply.data![index].by,
-                                        fontWeight: FontWeight.w300,
-                                        key: Key(reply.data![index].by)),
+                                    SmallCardText(text: reply.data![index].by, fontWeight: FontWeight.w300, key: Key(reply.data![index].by)),
                                     SmallCardText(
                                       text: ' - ',
                                       fontWeight: FontWeight.w200,
-                                      key: Key(reply.data![index].by +
-                                          reply.data![index].time),
+                                      key: Key(reply.data![index].by + reply.data![index].time),
                                     ),
                                     SmallCardText(
                                       text: reply.data![index].time,

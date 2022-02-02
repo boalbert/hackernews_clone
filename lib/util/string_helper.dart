@@ -1,9 +1,17 @@
 import 'package:timeago/timeago.dart' as timeago;
 
 class StringHelper {
+  String encodeComments(String text) {
+    //
+    // String lineBreak = text.replaceAll('<p>', '\n\n');
+    // String apostrophe = lineBreak.replaceAll(, replace)
+    //
+
+    return text.replaceAll('<p>', '\n\n').replaceAll('<i>', '').replaceAll('</i>', '');
+  }
+
   String formattedDateTime(int dateTime, {type}) {
-    final DateTime postTime =
-        DateTime.fromMillisecondsSinceEpoch(dateTime * 1000);
+    final DateTime postTime = DateTime.fromMillisecondsSinceEpoch(dateTime * 1000);
 
     return timeago.format(postTime);
   }

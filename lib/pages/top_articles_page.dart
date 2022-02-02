@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackernews/components/page_divider.dart';
 import 'package:hackernews/components/story_card.dart';
@@ -18,8 +17,7 @@ class TopArticleList extends StatefulWidget {
 class _TopArticleListState extends State<TopArticleList> {
   final ScrollController _scrollController = ScrollController();
 
-  final PagingController<int, Story> _pagingController =
-      PagingController(firstPageKey: 0);
+  final PagingController<int, Story> _pagingController = PagingController(firstPageKey: 0);
 
   @override
   void initState() {
@@ -44,17 +42,13 @@ class _TopArticleListState extends State<TopArticleList> {
   }
 
   void _navigateToShowCommentsPage(BuildContext context, Story story) async {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CommentPage(story: story)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage(story: story)));
   }
 
-  void _navigateToStatelessCommentPage(
-      BuildContext context, Story story) async {
-    List<Reply> repliesFromListOfInts =
-        await FetchData().getRepliesFromListOfInts(story.commentIds);
+  void _navigateToStatelessCommentPage(BuildContext context, Story story) async {
+    List<Reply> repliesFromListOfInts = await FetchData().getRepliesFromListOfInts(story.commentIds);
 
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CommentPage(story: story)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage(story: story)));
   }
 
   @override
@@ -68,16 +62,9 @@ class _TopArticleListState extends State<TopArticleList> {
             children: [
               InkWell(
                 onTap: () => {_navigateToShowCommentsPage(context, item)},
-                child: StoryCard(
-                    title: item.title,
-                    score: item.score,
-                    by: item.by,
-                    url: item.url,
-                    comments: item.commentIds.length,
-                    time: item.time),
+                child: StoryCard(title: item.title, score: item.score, by: item.by, url: item.url, comments: item.commentIds.length, time: item.time),
               ),
-              Visibility(
-                  visible: _togglePageDivider(index), child: PageDivider())
+              Visibility(visible: _togglePageDivider(index), child: PageDivider())
             ],
           ),
         ),

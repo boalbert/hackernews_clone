@@ -8,13 +8,7 @@ class Reply {
   final String time;
   final String type;
 
-  Reply(
-      {required this.by,
-      required this.id,
-      required this.parent,
-      required this.text,
-      required this.time,
-      required this.type});
+  Reply({required this.by, required this.id, required this.parent, required this.text, required this.time, required this.type});
 
   @override
   String toString() {
@@ -26,7 +20,8 @@ class Reply {
         by: json['by'] ?? '[Deleted]',
         id: json['id'],
         parent: json['parent'] ?? 0,
-        text: json["text"] ?? 'No comment',
+        text: json["text"] != null ? StringHelper().encodeComments(json["text"]) : 'No comment',
+        // text: json["text"] ?? 'No comment',
         time: StringHelper().formattedDateTime(json['time']),
         type: json['type']);
   }

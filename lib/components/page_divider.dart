@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PageDivider extends StatelessWidget {
@@ -13,8 +12,7 @@ class PageDivider extends StatelessWidget {
       child: Container(
         color: Colors.grey,
         child: Center(
-          child: Text('Page NewPage',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+          child: Text('Page NewPage', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
         ),
       ),
     );
