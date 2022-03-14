@@ -84,7 +84,10 @@ class _CommentPageState extends State<CommentPage> with AutomaticKeepAliveClient
                 child: Text(comment.error.toString()),
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                  child: CircularProgressIndicator(
+                strokeWidth: 1.0,
+              ));
             }
           },
         ));

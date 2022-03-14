@@ -36,34 +36,36 @@ class CommentCardStateless extends StatelessWidget {
                         text,
                         key: Key(text),
                       ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        cacheExtent: 3000000,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                left: BorderSide(width: 2.0, color: Colors.orange),
-                              ),
-                            ),
-                            padding: EdgeInsets.only(left: 15, top: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SmallCardText(key: Key(reply.data![index].by), text: reply.data![index].by, fontWeight: FontWeight.w300),
-                                    SmallCardText(key: Key(reply.data![index].text), text: ' - ', fontWeight: FontWeight.w200),
-                                    SmallCardText(key: Key(reply.data![index].time), text: reply.data![index].time, fontWeight: FontWeight.w200),
-                                  ],
+                      SingleChildScrollView(
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          cacheExtent: 3000000,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  left: BorderSide(width: 2.0, color: Colors.orange),
                                 ),
-                                Text(reply.data![index].text),
-                              ],
-                            ),
-                          );
-                        },
-                        shrinkWrap: true,
-                        itemCount: reply.data!.length,
+                              ),
+                              padding: EdgeInsets.only(left: 15, top: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SmallCardText(key: Key(reply.data![index].by), text: reply.data![index].by, fontWeight: FontWeight.w300),
+                                      SmallCardText(key: Key(reply.data![index].text), text: ' - ', fontWeight: FontWeight.w200),
+                                      SmallCardText(key: Key(reply.data![index].time), text: reply.data![index].time, fontWeight: FontWeight.w200),
+                                    ],
+                                  ),
+                                  Text(reply.data![index].text),
+                                ],
+                              ),
+                            );
+                          },
+                          shrinkWrap: true,
+                          itemCount: reply.data!.length,
+                        ),
                       ),
                     ],
                   ),
@@ -71,11 +73,23 @@ class CommentCardStateless extends StatelessWidget {
               ),
             );
           } else if (reply.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              semanticsLabel: "Loading",
+              strokeWidth: 1.0,
+            ));
           } else if (reply.connectionState == ConnectionState.active) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              semanticsLabel: "Active",
+              strokeWidth: 1.0,
+            ));
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              semanticsLabel: "Error",
+              strokeWidth: 1.0,
+            ));
           }
         });
   }
