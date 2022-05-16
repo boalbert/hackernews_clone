@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hackernews/pages/top_articles_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hackernews/screens/new_stories/new_stories_page.dart';
+import 'package:hackernews/screens/top_stories/top_stories_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ProviderScope(
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,10 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.dark().copyWith(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
-          dividerTheme: DividerThemeData(space: 10, indent: 20, endIndent: 20)),
+      theme: ThemeData(
+        // R 237 G 112 B 45
+        // 246 246 240
+        appBarTheme: AppBarTheme(toolbarHeight: 15),
+        primarySwatch: Colors.orange,
+      ),
       home: const MyHomePage(title: 'Stories'),
     );
   }
@@ -31,14 +39,39 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 56, // defaults to 56
-        title: Text(
-          widget.title,
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            labelPadding: EdgeInsets.all(5),
+            indicatorWeight: 2,
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+            tabs: [
+              Text('Top'),
+              Text('New'),
+              Text('Show'),
+              Text('Ask'),
+              Text('Jobs'),
+            ],
+          ),
         ),
+        body: const TabBarView(children: [
+          TopStoriesPage(),
+          NewStoriesPage(),
+          TopStoriesPage(),
+          TopStoriesPage(),
+          TopStoriesPage(),
+        ]),
       ),
-      body: TopArticleList(),
     );
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: Text(
+    //       widget.title,
+    //     ),
+    //   ),
+    //   body: TopArticleList(),
+    // );
   }
 }

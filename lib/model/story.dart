@@ -11,18 +11,25 @@ class Story {
   final String url;
   final String score;
   List<int> commentIds = <int>[];
+  final String text;
 
-  Story(
-      {
-      // required this.descendants,
-      required this.id,
-      required this.time,
-      required this.by,
-      required this.title,
-      required this.type,
-      required this.url,
-      required this.score,
-      required this.commentIds});
+  @override
+  String toString() {
+    return 'Story{by: $by, id: $id, time: $time, title: $title, type: $type, url: $url, score: $score, commentIds: $commentIds, text: $text}';
+  }
+
+  Story({
+    // required this.descendants,
+    required this.id,
+    required this.time,
+    required this.by,
+    required this.title,
+    required this.type,
+    required this.url,
+    required this.score,
+    required this.commentIds,
+    required this.text,
+  });
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
@@ -35,6 +42,7 @@ class Story {
         title: json['title'],
         type: json['type'],
         url: json['url'] ?? '',
+        text: json['text'] ?? '',
         commentIds: json["kids"] == null ? <int>[] : json["kids"].cast<int>());
   }
 }

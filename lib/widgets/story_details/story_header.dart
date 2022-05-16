@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hackernews/util/string_helper.dart';
+import 'package:hackernews/widgets/small_card_text.dart';
 
-import '../small_card_text.dart';
-
-class Header extends StatelessWidget {
+class StoryHeader extends StatelessWidget {
   final String url;
   final String title;
   final String by;
   final String points;
   final String commentCount;
   final String time;
+  final String text;
 
-  const Header({
+  const StoryHeader({
     Key? key,
     required this.url,
     required this.title,
@@ -19,6 +19,7 @@ class Header extends StatelessWidget {
     required this.points,
     required this.commentCount,
     required this.time,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -44,14 +45,11 @@ class Header extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                   key: Key(by),
                 ),
-                SmallCardText(
-                    text: ' - ',
-                    fontWeight: FontWeight.w200,
-                    key: Key(by + time)),
-                SmallCardText(
-                    text: time, fontWeight: FontWeight.w200, key: Key(time)),
+                SmallCardText(text: ' - ', fontWeight: FontWeight.w200, key: Key(by + time)),
+                SmallCardText(text: time, fontWeight: FontWeight.w200, key: Key(time)),
               ],
             ),
+            Text(StringHelper().encodeComments(text)),
           ],
         ),
       ),

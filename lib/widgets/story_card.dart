@@ -1,18 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hackernews/components/small_card_text.dart';
 import 'package:hackernews/util/string_helper.dart';
+import 'package:hackernews/widgets/small_card_text.dart';
 
 class StoryCard extends StatelessWidget {
-  const StoryCard(
-      {Key? key,
-      required this.title,
-      required this.score,
-      required this.by,
-      required this.url,
-      required this.comments,
-      required this.time})
-      : super(key: key);
+  const StoryCard({
+    Key? key,
+    required this.title,
+    required this.score,
+    required this.by,
+    required this.url,
+    required this.comments,
+    required this.time,
+  }) : super(key: key);
 
   final String title;
   final String score;
@@ -50,14 +49,9 @@ class StoryCard extends StatelessWidget {
           ),
           Row(
             children: [
-              SmallCardText(
-                  key: Key(by), text: by, fontWeight: FontWeight.w300),
-              SmallCardText(
-                  key: Key(by + time),
-                  text: ' - ',
-                  fontWeight: FontWeight.w200),
-              SmallCardText(
-                  key: Key(time), text: time, fontWeight: FontWeight.w200),
+              SmallCardText(key: Key(by), text: by, fontWeight: FontWeight.w300),
+              SmallCardText(key: Key(by + time), text: ' - ', fontWeight: FontWeight.w200),
+              SmallCardText(key: Key(time), text: time, fontWeight: FontWeight.w200),
             ],
           ),
           Padding(
@@ -75,9 +69,7 @@ class StoryCard extends StatelessWidget {
                 key: Key(by + score),
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
               ),
-              Text("$comments comments",
-                  key: Key(comments.toString() + by),
-                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11)),
+              Text("$comments comments", key: Key(comments.toString() + by), style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11)),
             ],
           )
         ],
