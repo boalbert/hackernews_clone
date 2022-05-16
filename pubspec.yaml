@@ -12,7 +12,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   timeago: ^3.1.0
-  infinite_scroll_pagination: ^3.1.0
   flutter_riverpod: ^1.0.3
   favicon: ^1.0.15
 
