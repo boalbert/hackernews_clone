@@ -45,14 +45,28 @@ class HttpHackerNewsRepository implements HackerNewRepository {
     }
   }
 
-  Future<List<Response>> getCommentsByStoryId(Story story) async {
+  Future<List<Response>> _getCommentsByStoryId(Story story) async {
     return Future.wait(story.commentIds.map((commentId) {
       return get(api.comment(commentId: commentId));
     }));
   }
 
+  Future<List<Response>> _getRepliesByCommentId(List<int> commentId) async {
+    return Future.wait(commentId.map((commentId) {
+      return get(api.comment(commentId: commentId));
+    }));
+  }
+
+  Future<List<Comment>> getReplies(Comment comment) {
+    final responses = _getRepliesByCommentId(comment.kids);
+    return responses.then((value) => value.map((response) {
+          final json = jsonDecode(response.body);
+          return Comment.fromJson(json);
+        }).toList());
+  }
+
   Future<List<Comment>> getComments(Story story) async {
-    final responses = getCommentsByStoryId(story);
+    final responses = _getCommentsByStoryId(story);
 
     return responses.then((value) => value.map((response) {
           final json = jsonDecode(response.body);

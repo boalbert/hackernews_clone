@@ -13,3 +13,7 @@ final newStoriesProvider = FutureProvider<List<Story>>((ref) async {
 final storyProvider = FutureProvider.family<List<Comment>, Story>((ref, story) {
   return ref.watch(hackerNewsRepositoryProvider).getComments(story);
 });
+
+final repliesProvider = FutureProvider.family<List<Comment>, Comment>((ref, comment) {
+  return ref.watch(hackerNewsRepositoryProvider).getReplies(comment);
+});
