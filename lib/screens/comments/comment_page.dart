@@ -19,39 +19,42 @@ class CommentPage extends ConsumerWidget {
     final AsyncValue comments = ref.watch(storyProvider(story));
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 40,
+        toolbarHeight: 64,
       ),
       body: comments.when(
-        data: (data) => Column(
-          children: [
-            StoryHeader(
-              url: story.url,
-              title: story.title,
-              by: story.by,
-              points: story.score,
-              commentCount: story.commentIds.length.toString(),
-              time: story.time,
-              text: StringHelper().encodeComments(story.text),
+        data: (data) => RefreshIndicator(
+          onRefresh: () async {
+            ref.refresh(storyProvider(story));
+            return await ref.read(storyProvider(story).future);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return StoryHeader(
+                    url: story.url,
+                    title: story.title,
+                    by: story.by,
+                    points: story.score,
+                    commentCount: story.commentIds.length.toString(),
+                    time: story.time,
+                    text: StringHelper().encodeComments(story.text),
+                  );
+                } else {
+                  return CommentCard(
+                    data[index],
+                    key: Key(data[index].id.toString()),
+                  );
+                }
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
             ),
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return CommentCard(
-                      data[index],
-                      key: Key(data[index].id.toString()),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
         error: (e, st) => Text('Error $e'),
         loading: () => Center(

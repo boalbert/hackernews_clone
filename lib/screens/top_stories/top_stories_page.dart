@@ -26,22 +26,28 @@ void _navigateToShowCommentsPage(BuildContext context, Story story) async {
 class _TopArticleListState extends ConsumerState<TopStoriesPage> {
   @override
   Widget build(BuildContext context) {
-    final stories = ref.watch(topStoriesProvider);
+    var stories = ref.watch(topStoriesProvider);
     return stories.when(
-      data: (story) => ListView.builder(
-          itemCount: story.length,
-          itemBuilder: (context, i) => InkWell(
-                onTap: () => _navigateToShowCommentsPage(context, story[i]),
-                child: StoryCard(
-                  key: Key(story[i].id.toString()),
-                  title: story[i].title,
-                  score: story[i].score,
-                  by: story[i].by,
-                  url: story[i].url,
-                  comments: story[i].commentIds.length,
-                  time: story[i].time,
-                ),
-              )),
+      data: (story) => RefreshIndicator(
+        onRefresh: () async {
+          ref.refresh(topStoriesProvider);
+          return await ref.read(topStoriesProvider.future);
+        },
+        child: ListView.builder(
+            itemCount: story.length,
+            itemBuilder: (context, i) => InkWell(
+                  onTap: () => _navigateToShowCommentsPage(context, story[i]),
+                  child: StoryCard(
+                    key: Key(story[i].id.toString()),
+                    title: story[i].title,
+                    score: story[i].score,
+                    by: story[i].by,
+                    url: story[i].url,
+                    comments: story[i].commentIds.length,
+                    time: story[i].time,
+                  ),
+                )),
+      ),
       error: (e, st) => Center(
         child: Text('Error $e'),
       ),

@@ -5,11 +5,11 @@ import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/hacker_news_api.dart';
 import 'package:hackernews/repository/abstract_hacker_news_repository.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class HttpHackerNewsRepository implements HackerNewRepository {
   final HackerNewsAPI api;
-  final http.Client client;
+  final Client client;
 
   HttpHackerNewsRepository({required this.api, required this.client});
 
@@ -20,7 +20,7 @@ class HttpHackerNewsRepository implements HackerNewRepository {
       case 200:
         return await _parseStories(response);
       default:
-        throw Exception('Could not fetch topStories');
+        throw ClientException('Could not fetch topStories');
     }
   }
 
@@ -45,9 +45,9 @@ class HttpHackerNewsRepository implements HackerNewRepository {
     }
   }
 
-  Future<List<http.Response>> getCommentsByStoryId(Story story) async {
+  Future<List<Response>> getCommentsByStoryId(Story story) async {
     return Future.wait(story.commentIds.map((commentId) {
-      return http.get(api.comment(commentId: commentId));
+      return get(api.comment(commentId: commentId));
     }));
   }
 
@@ -60,22 +60,15 @@ class HttpHackerNewsRepository implements HackerNewRepository {
         }).toList());
   }
 
-  Future<List<Story>> _parseStories(http.Response response) async {
+  Future<List<Story>> _parseStories(Response response) async {
     List<dynamic> storyIds = jsonDecode(response.body);
-
     return Future.wait(storyIds.take(30).map((e) => getStory(storyId: e)).toList());
-    // return storyFuture;
-    // for (int i = 0; i < 50; i++) {
-    //   Story story = await getStory(storyId: storyIds[i]);
-    //   stories.add(story);
-    // }
-    // return storyMap;
   }
 }
 
 final hackerNewsRepositoryProvider = Provider<HttpHackerNewsRepository>((ref) {
   return HttpHackerNewsRepository(
     api: HackerNewsAPI(),
-    client: http.Client(),
+    client: Client(),
   );
 });

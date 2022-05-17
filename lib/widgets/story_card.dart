@@ -23,29 +23,26 @@ class StoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Text(url),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (StringHelper().parseHost(url) != '')
-                  Text(
-                    StringHelper().parseHost(url),
-                    key: Key(url),
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (StringHelper().parseHost(url) != '')
                 Text(
-                  title,
-                  key: Key(title),
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  StringHelper().parseHost(url),
+                  key: Key(url),
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                 ),
-              ],
-            ),
+              Text(
+                title,
+                key: Key(title),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+              ),
+            ],
           ),
           Row(
             children: [
