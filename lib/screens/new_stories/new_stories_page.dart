@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
 import 'package:hackernews/screens/comments/comment_page.dart';
+import 'package:hackernews/widgets/error_message.dart';
 import 'package:hackernews/widgets/story_card.dart';
 
 class NewStoriesPage extends ConsumerStatefulWidget {
@@ -41,9 +42,7 @@ class _TopArticleListState extends ConsumerState<NewStoriesPage> {
                   time: story[i].time,
                 ),
               )),
-      error: (e, st) => Center(
-        child: Text('Error $e'),
-      ),
+      error: (e, st) => ErrorMessage(e.toString()),
       loading: () => Center(
         child: CircularProgressIndicator(
           color: Colors.orange,

@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:hackernews/util/string_helper.dart';
 import 'package:hackernews/widgets/small_card_text.dart';
 
@@ -33,9 +35,15 @@ class StoryHeader extends StatelessWidget {
             StringHelper().parseHost(url),
             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
           ),
+          SizedBox(
+            height: 8,
+          ),
           Text(
             title,
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          SizedBox(
+            height: 8,
           ),
           Row(
             children: [

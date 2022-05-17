@@ -58,6 +58,9 @@ class HttpHackerNewsRepository implements HackerNewRepository {
   }
 
   Future<List<Comment>> getReplies(Comment comment) {
+    if (comment.kids.isEmpty) {
+      return Future.value(List<Comment>.of([]));
+    }
     final responses = _getRepliesByCommentId(comment.kids);
     return responses.then((value) => value.map((response) {
           final json = jsonDecode(response.body);

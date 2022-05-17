@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
+import 'package:hackernews/widgets/error_message.dart';
 import 'package:hackernews/widgets/small_card_text.dart';
 
 class CommentCard extends ConsumerWidget {
@@ -52,10 +53,8 @@ class CommentCard extends ConsumerWidget {
           ),
         ],
       ),
-      error: (e, st) => Center(
-        child: Text('Error: $e'),
-      ),
-      loading: () => Container(),
+      error: (e, st) => ErrorMessage(e.toString()),
+      loading: () => CircularProgressIndicator(),
     );
   }
 }

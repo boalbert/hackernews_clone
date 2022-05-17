@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          bottom: TabBar(
+          bottom: const TabBar(
             labelPadding: EdgeInsets.all(5),
             indicatorWeight: 2,
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
@@ -56,22 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        body: const TabBarView(children: [
-          TopStoriesPage(),
-          NewStoriesPage(),
-          TopStoriesPage(),
-          TopStoriesPage(),
-          TopStoriesPage(),
-        ]),
+        body: const TabBarView(
+          children: [
+            TopStoriesPage(),
+            NewStoriesPage(),
+            TopStoriesPage(),
+            TopStoriesPage(),
+            TopStoriesPage(),
+          ],
+        ),
       ),
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text(
-    //       widget.title,
-    //     ),
-    //   ),
-    //   body: TopArticleList(),
-    // );
   }
 }

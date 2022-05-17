@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
 import 'package:hackernews/util/string_helper.dart';
+import 'package:hackernews/widgets/error_message.dart';
 import 'package:hackernews/widgets/story_details/comment_card.dart';
 import 'package:hackernews/widgets/story_details/story_header.dart';
 
@@ -16,16 +17,19 @@ class CommentPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue comments = ref.watch(storyProvider(story));
+    final AsyncValue comments = ref.watch(singleStoryProvider(story));
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          story.title,
+        ),
         toolbarHeight: 64,
       ),
       body: comments.when(
         data: (data) => RefreshIndicator(
           onRefresh: () async {
-            ref.refresh(storyProvider(story));
-            return await ref.read(storyProvider(story).future);
+            ref.refresh(singleStoryProvider(story));
+            return await ref.read(singleStoryProvider(story).future);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,7 +60,7 @@ class CommentPage extends ConsumerWidget {
             ),
           ),
         ),
-        error: (e, st) => Text('Error $e'),
+        error: (e, st) => ErrorMessage(e.toString()),
         loading: () => Center(
           child: CircularProgressIndicator(),
         ),
