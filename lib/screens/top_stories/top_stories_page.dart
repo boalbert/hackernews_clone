@@ -38,7 +38,6 @@ class _TopArticleListState extends ConsumerState<TopStoriesPage> {
             itemBuilder: (context, i) => InkWell(
                   onTap: () => _navigateToShowCommentsPage(context, story[i]),
                   child: StoryCard(
-                    key: Key(story[i].id.toString()),
                     title: story[i].title,
                     score: story[i].score,
                     by: story[i].by,
