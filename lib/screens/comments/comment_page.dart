@@ -50,7 +50,9 @@ class CommentPage extends ConsumerWidget {
                 } else {
                   return CommentCard(
                     data[index],
-                    key: Key(data[index].id.toString()),
+                    key: Key(
+                      data[index].id.toString(),
+                    ),
                   );
                 }
               },

@@ -57,6 +57,11 @@ class StoryHeader extends StatelessWidget {
             ],
           ),
           Text(StringHelper().encodeComments(text)),
+          SmallCardText(
+            text: '$commentCount comments',
+            fontWeight: FontWeight.w300,
+            key: Key(commentCount),
+          ),
         ],
       ),
     );

@@ -14,7 +14,11 @@ class StringHelper {
         .replaceAll("&quot;", "'")
         .replaceAll('<a href="', " ")
         .replaceAll(">", "")
-        .replaceAll("</a", "");
+        .replaceAll("</a", "")
+        .replaceAll("&lt;", "<")
+        .replaceAll("&gt;", ">")
+        .replaceAll("&le;", "≤")
+        .replaceAll("&ge;", "≥");
   }
 
   RichText htmlComment(String text, BuildContext context) {
