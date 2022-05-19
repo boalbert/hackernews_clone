@@ -1,6 +1,5 @@
 class HackerNewsAPI {
   static const String _apiBaseUrl = "hacker-news.firebaseio.com";
-  static const String _topStoriesPath = "/v0/topstories.json";
   static const String _item = "/v0/item/";
 
   Uri comment({required int commentId}) {

@@ -4,7 +4,7 @@
 
 ## TODO
 
-- [ ] Bump to Flutter 3
+- [X] Bump to Flutter 3
 - [ ] Support for Dark / Light mode
 - [ ] Open links in browser
 - [ ] Show correct comment count on page and comment page (shows count of parent comment, not replies atm)

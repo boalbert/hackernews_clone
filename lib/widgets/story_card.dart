@@ -57,16 +57,18 @@ class StoryCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                score + ' points',
+                '$score points',
                 key: Key(score + by),
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                style: TextStyle(
+                  fontWeight: FontWeight.w200,
+                  fontSize: 12,
+                ),
               ),
               Text(
-                ' - ',
-                key: Key(by + score),
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                " - $comments comments",
+                key: Key(comments.toString() + by),
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11),
               ),
-              Text("$comments comments", key: Key(comments.toString() + by), style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11)),
             ],
           )
         ],

@@ -7,14 +7,14 @@ class ParentCommentText extends StatefulWidget {
   const ParentCommentText({Key? key, required this.text}) : super(key: key);
 
   @override
-  _ParentCommentTextState createState() => _ParentCommentTextState();
+  ParentCommentTextState createState() => ParentCommentTextState();
 }
 
-class _ParentCommentTextState extends State<ParentCommentText> {
+class ParentCommentTextState extends State<ParentCommentText> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 8),
+      padding: EdgeInsets.only(left: 8, bottom: 8),
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         border: Border(

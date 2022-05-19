@@ -1,5 +1,5 @@
 name: hackernews
-description: training project in making simple hackernews app
+description: simple hackernews reader
 
 version: 1.0.0+1
 
@@ -18,8 +18,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
-  lints: ^1.0.1
+  flutter_lints: ^2.0.1
+  lints: ^2.0.0
 
 flutter:
   uses-material-design: true
