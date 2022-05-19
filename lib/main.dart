@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/screens/new_stories/new_stories_page.dart';
+import 'package:hackernews/screens/settings_page/settings_page.dart';
 import 'package:hackernews/screens/top_stories/top_stories_page.dart';
+import 'package:hackernews/theme/theme_provider.dart';
 
 void main() {
   runApp(
@@ -11,18 +14,26 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends ConsumerWidget {
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       theme: ThemeData(
-        // R 237 G 112 B 45
-        // 246 246 240
         appBarTheme: AppBarTheme(toolbarHeight: 15),
         primarySwatch: Colors.orange,
       ),
+      darkTheme: ThemeData.dark().copyWith(
+        appBarTheme: AppBarTheme(toolbarHeight: 15),
+        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent))),
+        primaryColorDark: Colors.orangeAccent,
+      ),
+      themeMode: themeMode,
       home: const MyHomePage(title: 'Stories'),
     );
   }
@@ -40,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
           bottom: const TabBar(
@@ -53,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text('Show'),
               Text('Ask'),
               Text('Jobs'),
+              Text('Settings'),
             ],
           ),
         ),
@@ -63,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TopStoriesPage(),
             TopStoriesPage(),
             TopStoriesPage(),
+            SettingsPage(),
           ],
         ),
       ),
