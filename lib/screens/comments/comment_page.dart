@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
 import 'package:hackernews/util/string_helper.dart';
+import 'package:hackernews/widgets/comment/comment_card.dart';
 import 'package:hackernews/widgets/error_message.dart';
-import 'package:hackernews/widgets/story_details/comment_card.dart';
-import 'package:hackernews/widgets/story_details/story_header.dart';
+import 'package:hackernews/widgets/story/story_header.dart';
 
 class CommentPage extends ConsumerWidget {
   final Story story;

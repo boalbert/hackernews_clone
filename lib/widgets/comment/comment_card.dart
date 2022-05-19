@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/model/comment.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
+import 'package:hackernews/widgets/comment/parent_comment/parent_comment_header.dart';
+import 'package:hackernews/widgets/comment/parent_comment/parent_comment_text.dart';
 import 'package:hackernews/widgets/error_message.dart';
-import 'package:hackernews/widgets/story_details/parent_comment_header.dart';
-import 'package:hackernews/widgets/story_details/parent_comment_text.dart';
 
+// ignore: must_be_immutable
 class CommentCard extends ConsumerStatefulWidget {
   final Comment comment;
   bool expanded;

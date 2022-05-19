@@ -4,7 +4,7 @@ import 'package:hackernews/model/story.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
 import 'package:hackernews/screens/comments/comment_page.dart';
 import 'package:hackernews/widgets/error_message.dart';
-import 'package:hackernews/widgets/story_card.dart';
+import 'package:hackernews/widgets/story/story_card.dart';
 
 class NewStoriesPage extends ConsumerStatefulWidget {
   const NewStoriesPage({

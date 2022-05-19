@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:hackernews/util/string_helper.dart';
 import 'package:hackernews/widgets/small_card_text.dart';
 
