@@ -47,7 +47,23 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class Index extends StateNotifier<int> {
+  Index() : super(0);
+
+  set value(int index) => state = index;
+}
+
+final indexProvider = StateNotifierProvider((ref) => Index());
+
 class _MyHomePageState extends State<MyHomePage> {
+  final List<BottomNavigationBarItem> navItems = const [
+    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+    BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Bookmarks'),
+    BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+  ];
+
+  final List<Widget> fragments = const [Text('Page 1'), Text('Page 2'), Text('Page 3')];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -78,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SettingsPage(),
           ],
         ),
+        bottomNavigationBar: BottomNavigationBar(items: navItems),
       ),
     );
   }

@@ -21,15 +21,20 @@ class SettingsPage extends ConsumerWidget {
               "Dark Mode",
               style: TextStyle(fontSize: 28),
             ),
-            CupertinoSwitch(
+            Switch(
                 value: isDarkMode,
                 onChanged: (value) {
                   if (value) {
-                    ref.read(themeModeProvider.state).state = ThemeMode.dark;
+                    ref
+                        .read(themeModeProvider.state)
+                        .state = ThemeMode.dark;
                   } else {
-                    ref.read(themeModeProvider.state).state = ThemeMode.light;
+                    ref
+                        .read(themeModeProvider.state)
+                        .state = ThemeMode.light;
                   }
-                })
+                }),
+
           ],
         ),
       ),
