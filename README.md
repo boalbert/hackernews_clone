@@ -17,3 +17,7 @@
 
 ![Screenshot](https://github.com/boalbert/hackernews_clone/blob/master/screenshots/home.png "Home")
 ![Screenshot](https://github.com/boalbert/hackernews_clone/blob/master/screenshots/comments.png "Comments")
+
+### Resources
+API https://hn.algolia.com/api
+
