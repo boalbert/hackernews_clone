@@ -17,4 +17,8 @@ class HackerNewsAPI {
   Uri newStories() {
     return Uri.parse('https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty');
   }
+
+  Uri searchRelevance(String question) {
+    return Uri.parse('https://hn.algolia.com/api/v1/search?query=$question');
+  }
 }

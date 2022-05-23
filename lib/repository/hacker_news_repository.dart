@@ -7,6 +7,8 @@ import 'package:hackernews/network/hacker_news_api.dart';
 import 'package:hackernews/repository/abstract_hacker_news_repository.dart';
 import 'package:http/http.dart';
 
+import '../model/search/hits.dart';
+
 class HttpHackerNewsRepository implements HackerNewRepository {
   final HackerNewsAPI api;
   final Client client;
@@ -80,6 +82,17 @@ class HttpHackerNewsRepository implements HackerNewRepository {
   Future<List<Story>> _parseStories(Response response) async {
     List<dynamic> storyIds = jsonDecode(response.body);
     return Future.wait(storyIds.take(30).map((e) => getStory(storyId: e)).toList());
+  }
+
+  Future<Hits> searchByRelevance(String question) async {
+    final response = await client.get(api.searchRelevance(question));
+
+    switch (response.statusCode) {
+      case 200:
+        return Hits.fromJson(jsonDecode(response.body));
+      default:
+        throw ClientException('Unable to search');
+    }
   }
 }
 
