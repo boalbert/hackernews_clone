@@ -4,5 +4,5 @@ class NoAnimationPageRoute extends MaterialPageRoute {
   NoAnimationPageRoute({builder}) : super(builder: builder);
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 1200);
+  Duration get transitionDuration => const Duration(milliseconds: 0);
 }

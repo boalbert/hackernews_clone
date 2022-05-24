@@ -3,7 +3,7 @@ import 'package:hackernews/util/string_helper.dart';
 import 'package:hackernews/widgets/small_card_text.dart';
 
 class StoryCard extends StatelessWidget {
-  const StoryCard({
+  StoryCard({
     Key? key,
     required this.title,
     required this.score,

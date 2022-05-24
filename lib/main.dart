@@ -24,12 +24,17 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.orange,
-          appBarTheme: AppBarTheme(toolbarHeight: 15),
-          primarySwatch: Colors.orange,
-          iconTheme: IconThemeData(
-            color: Colors.orange,
-          )),
+        primaryColor: Colors.orange,
+        appBarTheme: AppBarTheme(toolbarHeight: 15),
+        primarySwatch: Colors.orange,
+        iconTheme: IconThemeData(
+          color: Colors.orange,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+        ),
+      ),
       darkTheme: ThemeData.dark().copyWith(
         appBarTheme: AppBarTheme(toolbarHeight: 15),
         elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent))),

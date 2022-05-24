@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackernews/screens/new_stories/new_stories_page.dart';
+import 'package:hackernews/screens/search/search_page.dart';
 import 'package:hackernews/screens/settings/settings_page.dart';
 import 'package:hackernews/util/no_animation_page_route.dart';
 
@@ -18,30 +19,24 @@ class _MyHomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _push(_selectedIndex, context);
+      _push(index, context);
     });
   }
 
   void _push(int index, BuildContext context) {
     switch (index) {
       case 0:
-        Navigator.push(
-            context,
-            NoAnimationPageRoute(
-              builder: (context) => HomePage(),
-            ));
         break;
       case 1:
-        Navigator.push(context, NoAnimationPageRoute(builder: (context) => HomePage()));
+        Navigator.push(context, NoAnimationPageRoute(builder: (context) => SearchPage()));
         break;
       case 2:
-        Navigator.push(context, NoAnimationPageRoute(builder: (context) => HomePage()));
         break;
       case 3:
         Navigator.push(context, NoAnimationPageRoute(builder: (context) => SettingsPage()));
         break;
       default:
-        null;
+        break;
     }
   }
 
@@ -76,10 +71,10 @@ class _MyHomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home, color: Theme.of(context).iconTheme.color), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.search, color: Theme.of(context).iconTheme.color), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.bookmark, color: Theme.of(context).iconTheme.color), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.home, color: Theme.of(context).iconTheme.color), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.search, color: Theme.of(context).iconTheme.color), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.bookmark, color: Theme.of(context).iconTheme.color), label: 'Bookmarks'),
+            BottomNavigationBarItem(icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color), label: 'More'),
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
