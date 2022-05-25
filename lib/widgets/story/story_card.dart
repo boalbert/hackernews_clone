@@ -22,57 +22,54 @@ class StoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Text(url),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (StringHelper().parseHost(url) != '')
-                Text(
-                  StringHelper().parseHost(url),
-                  key: Key(url),
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (StringHelper().parseHost(url) != '')
               Text(
-                title,
-                key: Key(title),
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                StringHelper().parseHost(url),
+                key: Key(url),
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
               ),
-            ],
-          ),
-          Row(
-            children: [
-              SmallCardText(key: Key(by), text: by, fontWeight: FontWeight.w300),
-              SmallCardText(key: Key(by + time), text: ' - ', fontWeight: FontWeight.w200),
-              SmallCardText(key: Key(time), text: time, fontWeight: FontWeight.w200),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
-          ),
-          Row(
-            children: [
-              Text(
-                '$score points',
-                key: Key(score + by),
-                style: TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 12,
-                ),
+            Text(
+              title,
+              key: Key(title),
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            SmallCardText(key: Key(by), text: by, fontWeight: FontWeight.w300),
+            SmallCardText(key: Key(by + time), text: ' - ', fontWeight: FontWeight.w200),
+            SmallCardText(key: Key(time), text: time, fontWeight: FontWeight.w200),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+        ),
+        Row(
+          children: [
+            Text(
+              '$score points',
+              key: Key(score + by),
+              style: TextStyle(
+                fontWeight: FontWeight.w200,
+                fontSize: 12,
               ),
-              Text(
-                " - $comments comments",
-                key: Key(comments.toString() + by),
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11),
-              ),
-            ],
-          )
-        ],
-      ),
+            ),
+            Text(
+              " - $comments comments",
+              key: Key(comments.toString() + by),
+              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11),
+            ),
+          ],
+        ),
+        SizedBox(height: 16)
+      ],
     );
   }
 }

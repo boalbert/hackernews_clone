@@ -30,18 +30,21 @@ class _TopArticleListState extends ConsumerState<NewStoriesPage> {
     final stories = ref.watch(newStoriesProvider);
     return stories.when(
       data: (story) => ListView.builder(
-          itemCount: story.length,
-          itemBuilder: (context, i) => InkWell(
-                onTap: () => _navigateToShowCommentsPage(context, story[i]),
-                child: StoryCard(
-                  title: story[i].title,
-                  score: story[i].score,
-                  by: story[i].by,
-                  url: story[i].url,
-                  comments: story[i].commentIds.length,
-                  time: story[i].time,
+        itemCount: story.length,
+        itemBuilder: (context, index) => InkWell(
+          onTap: () => _navigateToShowCommentsPage(context, story[index]),
+          child: index == 0
+              ? SizedBox(height: 16)
+              : StoryCard(
+                  title: story[index].title,
+                  score: story[index].score,
+                  by: story[index].by,
+                  url: story[index].url,
+                  comments: story[index].commentIds.length,
+                  time: story[index].time,
                 ),
-              )),
+        ),
+      ),
       error: (e, st) => ErrorMessage(e.toString()),
       loading: () => Center(
         child: CircularProgressIndicator(

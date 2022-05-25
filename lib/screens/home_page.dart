@@ -3,6 +3,7 @@ import 'package:hackernews/screens/new_stories/new_stories_page.dart';
 import 'package:hackernews/screens/search/search_page.dart';
 import 'package:hackernews/screens/settings/settings_page.dart';
 import 'package:hackernews/util/no_animation_page_route.dart';
+import 'package:hackernews/widgets/shared/padded_scaffold.dart';
 
 import 'top_stories/top_stories_page.dart';
 
@@ -44,7 +45,7 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 5,
-      child: Scaffold(
+      child: PaddedScaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           bottom: const TabBar(

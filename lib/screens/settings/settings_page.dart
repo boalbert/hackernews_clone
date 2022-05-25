@@ -5,6 +5,7 @@ import 'package:hackernews/screens/home_page.dart';
 import 'package:hackernews/screens/search/search_page.dart';
 import 'package:hackernews/theme/theme_provider.dart';
 import 'package:hackernews/util/no_animation_page_route.dart';
+import 'package:hackernews/widgets/shared/padded_scaffold.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({
@@ -54,43 +55,40 @@ class _Settings2State extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = ref.watch(isDarkModeProvider);
-    return Scaffold(
+    return PaddedScaffold(
       appBar: AppBar(
         title: Text(
           'Settings',
         ),
         toolbarHeight: 64,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Settings',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Divider(),
-            Row(
-              children: [
-                Text('Dark Mode'),
-                Spacer(),
-                Switch(
-                  value: isDarkMode,
-                  onChanged: (value) {
-                    toggleThemeMode(value, ref);
-                  },
-                )
-              ],
-            ),
-            Divider(),
-            Text(
-              'About',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Divider(),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Settings',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Divider(),
+          Row(
+            children: [
+              Text('Dark Mode'),
+              Spacer(),
+              Switch(
+                value: isDarkMode,
+                onChanged: (value) {
+                  toggleThemeMode(value, ref);
+                },
+              )
+            ],
+          ),
+          Divider(),
+          Text(
+            'About',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Divider(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
