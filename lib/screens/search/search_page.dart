@@ -67,6 +67,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         toolbarHeight: 64,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.all(16),
@@ -109,23 +110,35 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   return EmptySearchResult('No results');
                 }
                 return Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return StoryCard(
-                        key: Key('${data.searchHits![index].createdAt.toString()} - ${data.searchHits![index].storyId}'),
-                        url: data.searchHits![index].url ?? 'url null',
-                        title: data.searchHits![index].storyTitle ?? data.searchHits![index].title!,
-                        by: data.searchHits![index].author!,
-                        time: data.searchHits![index].createdAt!,
-                        score: data.searchHits![index].points.toString() == 'null' ? '0' : data.searchHits![index].points.toString(),
-                        comments: data.searchHits![index].numberOfComments ?? 0,
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider();
-                    },
-                    itemCount: data.searchHits!.length,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      NumberOfHits(data.nbHits!, data.processingTimeMS!),
+                      Divider(
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return StoryCard(
+                              key: Key('${data.searchHits![index].createdAt.toString()} - ${data.searchHits![index].storyId}'),
+                              url: data.searchHits![index].url ?? 'url null',
+                              title: data.searchHits![index].storyTitle ?? data.searchHits![index].title!,
+                              by: data.searchHits![index].author!,
+                              time: data.searchHits![index].createdAt!,
+                              score: data.searchHits![index].points.toString() == 'null' ? '0' : data.searchHits![index].points.toString(),
+                              comments: data.searchHits![index].numberOfComments ?? 0,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider();
+                          },
+                          itemCount: data.searchHits!.length,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -144,6 +157,24 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class NumberOfHits extends StatelessWidget {
+  final int numberOfHits;
+  final int processingTimeMS;
+
+  const NumberOfHits(this.numberOfHits, this.processingTimeMS, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 16),
+      child: Text(
+        '$numberOfHits results (${(processingTimeMS / 1000)} seconds)',
+        style: Theme.of(context).textTheme.bodySmall,
       ),
     );
   }

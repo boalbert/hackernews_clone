@@ -5,12 +5,14 @@ class Hits {
   final int? nbHits;
   final int? page;
   final int? nbPages;
+  final int? processingTimeMS;
 
   Hits({
     this.searchHits,
     this.nbHits,
     this.page,
     this.nbPages,
+    this.processingTimeMS,
   });
 
   factory Hits.fromJson(Map<String, dynamic> json) => Hits(
@@ -18,6 +20,7 @@ class Hits {
         nbHits: json["nbHits"],
         page: json["page"],
         nbPages: json["nbPages"],
+        processingTimeMS: json["processingTimeMS"],
       );
 
   @override
