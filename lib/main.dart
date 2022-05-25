@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/screens/home_page.dart';
+import 'package:hackernews/theme/lib_color_schemes.g.dart';
 import 'package:hackernews/theme/theme_provider.dart';
 
 void main() {
@@ -23,22 +24,11 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.orange,
-        appBarTheme: AppBarTheme(toolbarHeight: 15),
-        primarySwatch: Colors.orange,
-        iconTheme: IconThemeData(
-          color: Colors.orange,
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-        ),
+      theme: ThemeData.from(
+        colorScheme: CustomTheme.lightColorScheme,
       ),
-      darkTheme: ThemeData.dark().copyWith(
-        appBarTheme: AppBarTheme(toolbarHeight: 15),
-        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent))),
-        primaryColorDark: Colors.orangeAccent,
+      darkTheme: ThemeData.from(
+        colorScheme: CustomTheme.darkColorScheme,
       ),
       themeMode: themeMode,
       home: const HomePage(),

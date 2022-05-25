@@ -47,10 +47,10 @@ class _MyHomePageState extends State<HomePage> {
       length: 5,
       child: PaddedScaffold(
         appBar: AppBar(
+          toolbarHeight: 15,
           automaticallyImplyLeading: false,
           bottom: const TabBar(
             labelPadding: EdgeInsets.all(5),
-            indicatorWeight: 2,
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
             tabs: [
               Text('Top'),

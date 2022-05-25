@@ -86,8 +86,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 ),
               ),
               filled: true,
-              fillColor: Colors.grey.withOpacity(0.15),
-              hintText: '',
+              hintText: 'Search...',
               prefixIcon: Icon(Icons.search),
               suffixIcon: _controller.text.isNotEmpty
                   ? IconButton(

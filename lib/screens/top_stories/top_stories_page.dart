@@ -42,6 +42,7 @@ class _TopArticleListState extends ConsumerState<TopStoriesPage> {
               child: index == 0
                   ? SizedBox(height: 16)
                   : StoryCard(
+                      key: Key('${story[index].id.toString()}_topStories'),
                       title: story[index].title,
                       score: story[index].score,
                       by: story[index].by,

@@ -31,21 +31,19 @@ class StoryCard extends StatelessWidget {
             if (StringHelper().parseHost(url) != '')
               Text(
                 StringHelper().parseHost(url),
-                key: Key(url),
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
               ),
             Text(
               title,
-              key: Key(title),
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ],
         ),
         Row(
           children: [
-            SmallCardText(key: Key(by), text: by, fontWeight: FontWeight.w300),
-            SmallCardText(key: Key(by + time), text: ' - ', fontWeight: FontWeight.w200),
-            SmallCardText(key: Key(time), text: time, fontWeight: FontWeight.w200),
+            SmallCardText(text: by, fontWeight: FontWeight.w300),
+            SmallCardText(text: ' - ', fontWeight: FontWeight.w200),
+            SmallCardText(text: time, fontWeight: FontWeight.w200),
           ],
         ),
         Padding(
@@ -55,7 +53,6 @@ class StoryCard extends StatelessWidget {
           children: [
             Text(
               '$score points',
-              key: Key(score + by),
               style: TextStyle(
                 fontWeight: FontWeight.w200,
                 fontSize: 12,
@@ -63,7 +60,6 @@ class StoryCard extends StatelessWidget {
             ),
             Text(
               " - $comments comments",
-              key: Key(comments.toString() + by),
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11),
             ),
           ],

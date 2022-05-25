@@ -25,7 +25,7 @@ class _ParentCommentHeaderState extends State<ParentCommentHeader> {
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
-            color: Colors.orangeAccent,
+            color: Color(0xFFA43E00),
             width: 3,
           ),
         ),

@@ -65,11 +65,9 @@ class _Settings2State extends ConsumerState<SettingsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Settings',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          Divider(),
+          SizedBox(height: 16),
+
+          // Divider(),
           Row(
             children: [
               Text('Dark Mode'),
@@ -82,12 +80,41 @@ class _Settings2State extends ConsumerState<SettingsPage> {
               )
             ],
           ),
-          Divider(),
           Text(
             'About',
             style: Theme.of(context).textTheme.headline6,
           ),
-          Divider(),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Text('Developer'),
+              Spacer(),
+              Text('andersson.albert@gmail.com'),
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Text('Version'),
+              Spacer(),
+              Text('0.1'),
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Text('Repo'),
+              Spacer(),
+              Expanded(
+                child: Text(
+                  'github.com/boalbert/hackernews_clone',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                  maxLines: 3,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

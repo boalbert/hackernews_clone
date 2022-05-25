@@ -19,7 +19,7 @@ class ParentCommentTextState extends State<ParentCommentText> {
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
-            color: Colors.orangeAccent,
+            color: Color(0xFFA43E00),
             width: 3,
           ),
         ),

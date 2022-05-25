@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class SmallCardText extends StatelessWidget {
   const SmallCardText({
-    required Key? key,
     required this.text,
     required this.fontWeight,
-  }) : super(key: key);
+  });
 
   final String text;
   final FontWeight fontWeight;

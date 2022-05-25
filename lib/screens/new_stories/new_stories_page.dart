@@ -36,6 +36,7 @@ class _TopArticleListState extends ConsumerState<NewStoriesPage> {
           child: index == 0
               ? SizedBox(height: 16)
               : StoryCard(
+                  key: Key('${story[index].id.toString()}_newStories'),
                   title: story[index].title,
                   score: story[index].score,
                   by: story[index].by,
@@ -47,9 +48,7 @@ class _TopArticleListState extends ConsumerState<NewStoriesPage> {
       ),
       error: (e, st) => ErrorMessage(e.toString()),
       loading: () => Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+        child: CircularProgressIndicator(),
       ),
     );
   }
