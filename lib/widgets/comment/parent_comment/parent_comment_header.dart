@@ -34,7 +34,7 @@ class _ParentCommentHeaderState extends State<ParentCommentHeader> {
         children: [
           Text(
             '${widget.by} - ${widget.time}',
-            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 11),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           Spacer(),
           Visibility(

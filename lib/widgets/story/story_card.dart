@@ -38,37 +38,33 @@ class StoryCard extends StatelessWidget {
               if (StringHelper().parseHost(url) != '')
                 Text(
                   StringHelper().parseHost(url),
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ],
           ),
         ),
+        SizedBox(height: 8),
         Row(
           children: [
-            SmallCardText(text: by, fontWeight: FontWeight.w300),
-            SmallCardText(text: ' - ', fontWeight: FontWeight.w200),
-            SmallCardText(text: time, fontWeight: FontWeight.w200),
+            SmallCardText(text: by),
+            SmallCardText(text: ' - '),
+            SmallCardText(text: time),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 5),
-        ),
+        SizedBox(height: 8),
         Row(
           children: [
             Text(
               '$score points',
-              style: TextStyle(
-                fontWeight: FontWeight.w200,
-                fontSize: 12,
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             Text(
               " - $comments comments",
-              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 11),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),

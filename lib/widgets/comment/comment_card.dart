@@ -26,47 +26,48 @@ class _ConsumerCardState extends ConsumerState<CommentCard> {
   Widget build(BuildContext context) {
     final replies = ref.watch(repliesProvider(widget.comment));
     return replies.when(
-      data: (data) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                widget.expanded = !widget.expanded;
-              });
-            },
-            child: ParentCommentHeader(
-              key: Key(widget.comment.id.toString()),
-              by: widget.comment.by,
-              time: widget.comment.time,
-              expanded: widget.expanded,
+      data: (data) => Padding(
+        padding: EdgeInsets.only(left: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                setState(() {
+                  widget.expanded = !widget.expanded;
+                });
+              },
+              child: ParentCommentHeader(
+                key: Key(widget.comment.id.toString()),
+                by: widget.comment.by,
+                time: widget.comment.time,
+                expanded: widget.expanded,
+              ),
             ),
-          ),
-          Visibility(
-            visible: widget.expanded,
-            child: Column(
-              children: [
-                ParentCommentText(
-                  text: widget.comment.text,
-                ),
-                ListView.builder(
-                  itemCount: data.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: CommentCard(
+            Visibility(
+              visible: widget.expanded,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ParentCommentText(
+                    text: widget.comment.text,
+                  ),
+                  ListView.builder(
+                    itemCount: data.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return CommentCard(
                         data[index],
                         key: Key(data[index].id.toString()),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       error: (e, st) => ErrorMessage(e.toString()),
       loading: () => Center(

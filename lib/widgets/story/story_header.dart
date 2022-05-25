@@ -46,19 +46,13 @@ class StoryHeader extends StatelessWidget {
           ),
           Row(
             children: [
-              SmallCardText(
-                text: by,
-                fontWeight: FontWeight.w300,
-              ),
-              SmallCardText(text: ' - ', fontWeight: FontWeight.w200),
-              SmallCardText(text: time, fontWeight: FontWeight.w200),
+              SmallCardText(text: by),
+              SmallCardText(text: ' - '),
+              SmallCardText(text: time),
             ],
           ),
           Text(StringHelper().encodeComments(text)),
-          SmallCardText(
-            text: '$commentCount comments',
-            fontWeight: FontWeight.w300,
-          ),
+          SmallCardText(text: '$commentCount comments'),
         ],
       ),
     );
