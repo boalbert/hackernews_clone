@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackernews/util/string_helper.dart';
 import 'package:hackernews/widgets/small_card_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StoryCard extends StatelessWidget {
   StoryCard({
@@ -20,24 +21,31 @@ class StoryCard extends StatelessWidget {
   final int comments;
   final String time;
 
+  _openUrl() async {
+    await launchUrl(Uri.parse(url));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (StringHelper().parseHost(url) != '')
+        InkWell(
+          onTap: _openUrl,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (StringHelper().parseHost(url) != '')
+                Text(
+                  StringHelper().parseHost(url),
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                ),
               Text(
-                StringHelper().parseHost(url),
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                title,
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               ),
-            Text(
-              title,
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-            ),
-          ],
+            ],
+          ),
         ),
         Row(
           children: [
@@ -64,7 +72,7 @@ class StoryCard extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16)
+        SizedBox(height: 32)
       ],
     );
   }

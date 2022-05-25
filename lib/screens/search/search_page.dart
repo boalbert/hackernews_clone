@@ -111,7 +111,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 if (_controller.text.isEmpty) {
                   return EmptySearchResult('Search for stories');
                 }
-                return Flexible(child: SearchResult(data.nbHits!, data.processingTimeMS!, data.searchHits!));
+                return Flexible(
+                  child: SearchResult(data.nbHits!, data.processingTimeMS!, data.searchHits!),
+                );
               },
               error: (e, st) => ErrorMessage(e.toString()),
               loading: () => Center(

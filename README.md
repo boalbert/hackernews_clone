@@ -7,7 +7,7 @@
 - [X] Bump to Flutter 3
 - [X] Support for Dark / Light mode
 - [X] Search functionality
-- [ ] Open links in browser
+- [X] Open links in browser
 - [ ] Show correct comment count on page and comment page (shows count of parent comment, not replies atm)
 - [X] Bottom nav bar
     - Home / Bookmarks / Settings / Search

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/screens/home_page.dart';
@@ -13,10 +12,10 @@ class SettingsPage extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState createState() => _Settings2State();
+  ConsumerState createState() => _SettingsPageState();
 }
 
-class _Settings2State extends ConsumerState<SettingsPage> {
+class _SettingsPageState extends ConsumerState<SettingsPage> {
   int _selectedIndex = 3;
 
   void _onItemTapped(int index) {
@@ -29,7 +28,6 @@ class _Settings2State extends ConsumerState<SettingsPage> {
   void _push(int index, BuildContext context) {
     switch (index) {
       case 0:
-        // Navigator.push(context, NoAnimationPageRoute(builder: (context) => HomePage()));
         Navigator.push(context, NoAnimationPageRoute(builder: (context) => HomePage()));
         break;
       case 1:
@@ -44,7 +42,7 @@ class _Settings2State extends ConsumerState<SettingsPage> {
     }
   }
 
-  void toggleThemeMode(bool value, WidgetRef ref) {
+  void _toggleThemeMode(bool value, WidgetRef ref) {
     if (value) {
       ref.read(themeModeProvider.state).state = ThemeMode.dark;
     } else {
@@ -75,7 +73,7 @@ class _Settings2State extends ConsumerState<SettingsPage> {
               Switch(
                 value: isDarkMode,
                 onChanged: (value) {
-                  toggleThemeMode(value, ref);
+                  _toggleThemeMode(value, ref);
                 },
               )
             ],

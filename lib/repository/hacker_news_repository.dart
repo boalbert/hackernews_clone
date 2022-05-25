@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackernews/model/comment.dart';
+import 'package:hackernews/model/comment/item.dart';
+import 'package:hackernews/model/comment/real_comment.dart';
 import 'package:hackernews/model/story.dart';
 import 'package:hackernews/network/hacker_news_api.dart';
 import 'package:hackernews/repository/abstract_hacker_news_repository.dart';
@@ -68,6 +70,28 @@ class HttpHackerNewsRepository implements HackerNewRepository {
           final json = jsonDecode(response.body);
           return Comment.fromJson(json);
         }).toList());
+  }
+
+  Future<Item> getComments2(int itemId) async {
+    final response = await client.get(api.comment2(itemId: itemId));
+
+    switch (response.statusCode) {
+      case 200:
+        return Item.fromJson(jsonDecode(response.body));
+      default:
+        throw ClientException('Failed to fetch comments: getComments()');
+    }
+  }
+
+  Future<CommentCount> getCommentCount(int itemId) async {
+    final response = await client.get(api.commentCount(itemId: itemId));
+
+    switch (response.statusCode) {
+      case 200:
+        return CommentCount.fromJson(jsonDecode(response.body));
+      default:
+        throw ClientException('Failed to fetch comments: getComments()');
+    }
   }
 
   Future<List<Comment>> getComments(Story story) async {

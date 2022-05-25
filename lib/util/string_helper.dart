@@ -4,6 +4,7 @@ class StringHelper {
   String encodeComments(String text) {
     return text
         .replaceAll('<p>', '\n\n')
+        .replaceAll('</p>', '')
         .replaceAll('<i>', '')
         .replaceAll('</i>', '')
         .replaceAll('&#x2F;', '/')
