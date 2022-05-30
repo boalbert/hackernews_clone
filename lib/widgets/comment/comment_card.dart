@@ -10,9 +10,11 @@ import 'package:hackernews/widgets/error_message.dart';
 class CommentCard extends ConsumerStatefulWidget {
   final Comment comment;
   bool expanded;
+  final int index;
 
   CommentCard(
-    this.comment, {
+    this.comment,
+    this.index, {
     Key? key,
     this.expanded = true,
   }) : super(key: key);
@@ -59,6 +61,7 @@ class _ConsumerCardState extends ConsumerState<CommentCard> {
                     itemBuilder: (context, index) {
                       return CommentCard(
                         data[index],
+                        index,
                         key: Key(data[index].id.toString()),
                       );
                     },

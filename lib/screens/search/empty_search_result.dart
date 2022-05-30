@@ -10,9 +10,12 @@ class EmptySearchResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.grey),
+    return Center(
+      heightFactor: 20,
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.grey),
+      ),
     );
   }
 }

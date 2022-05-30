@@ -28,3 +28,7 @@ final singleStoryProvider = FutureProvider.family<List<Comment>, Story>((ref, st
 final repliesProvider = FutureProvider.family<List<Comment>, Comment>((ref, comment) {
   return ref.watch(hackerNewsRepositoryProvider).getReplies(comment);
 });
+
+final storyProvider = FutureProvider.family<Story, int>((ref, storyId) {
+  return ref.watch(hackerNewsRepositoryProvider).getStory(storyId: storyId);
+});

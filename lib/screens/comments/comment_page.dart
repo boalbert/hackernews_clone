@@ -4,6 +4,8 @@ import 'package:hackernews/model/story.dart';
 import 'package:hackernews/providers/top_articles_provider.dart';
 import 'package:hackernews/widgets/comment/comment_card.dart';
 import 'package:hackernews/widgets/error_message.dart';
+import 'package:hackernews/widgets/shared/padded_scaffold.dart';
+import 'package:hackernews/widgets/story/story_header.dart';
 
 class CommentPage extends ConsumerWidget {
   final Story story;
@@ -16,7 +18,7 @@ class CommentPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue comments = ref.watch(singleStoryProvider(story));
-    return Scaffold(
+    return PaddedScaffold(
       appBar: AppBar(
         title: Text(
           story.title,
@@ -29,20 +31,37 @@ class CommentPage extends ConsumerWidget {
             ref.refresh(singleStoryProvider(story));
             return await ref.read(singleStoryProvider(story).future);
           },
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return CommentCard(
-                data[index],
-                key: Key(
-                  data[index].id.toString(),
+          child: Column(
+            children: [
+              StoryHeader(
+                url: story.url,
+                title: story.title,
+                by: story.by,
+                points: story.score,
+                commentCount: story.commentIds.length.toString(),
+                time: story.time,
+                text: story.text,
+              ),
+              SizedBox(height: 8),
+              Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return CommentCard(
+                      data[index],
+                      index,
+                      key: Key(
+                        data[index].id.toString(),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider();
+                  },
                 ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
+              ),
+            ],
           ),
         ),
         error: (e, st) => ErrorMessage(e.toString()),

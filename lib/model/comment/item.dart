@@ -20,7 +20,7 @@ class Item {
         json['text'],
         json['points'],
         json['parent_id'],
-        List<ItemChild>.from(json["children"].map((x) => ItemChild.fromJson(x))),
+        json['children'] == null ? <ItemChild>[] : List<ItemChild>.from(json["children"].map((x) => ItemChild.fromJson(x))),
       );
 
   @override
@@ -47,7 +47,7 @@ class ItemChild {
         json['text'],
         json['points'],
         json['parent_id'],
-        List<ItemChild>.from(json["children"].map((x) => ItemChild.fromJson(x))),
+        json['children'] == null ? <ItemChild>[] : List<ItemChild>.from(json["children"].map((x) => ItemChild.fromJson(x))),
       );
 
   @override
